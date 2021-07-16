@@ -25,8 +25,6 @@ class _NewsPageState extends State<NewsPage> {
   void getNews() async {
     var result = await RssNews().getNews();
     setState(() => rssFeed = result);
-    rssFeed.items
-        .forEach((element) => print(getWordMinute(element.description)));
   }
 
   @override
