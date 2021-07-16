@@ -65,7 +65,7 @@ class HomePage extends StatelessWidget {
             width: View.x * 100,
             padding: EdgeInsets.only(top: View.y * 3, left: View.x * 7),
             child: Text(
-              'COVID-19',
+              'Siaga Covid',
               style: TextStyle(
                 fontSize: View.x * 8,
                 color: Colors.white,
@@ -150,7 +150,7 @@ class HomePage extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.all(View.x * 7),
         child: Text(
-          'Patuhi Protokol Kesehatan',
+          'Protokol Kesehatan',
           style: TextStyle(
             fontSize: View.x * 5,
             fontWeight: FontWeight.bold,
@@ -246,7 +246,7 @@ class HomePage extends StatelessWidget {
                         top: View.x * 5,
                       ),
                       child: Text(
-                        'Obat dan Vitamin',
+                        'Stay safe and keep healhty',
                         textAlign: TextAlign.start,
                         style: TextStyle(
                           color: Colors.white,
@@ -264,7 +264,7 @@ class HomePage extends StatelessWidget {
                         right: View.x * 1,
                       ),
                       child: Text(
-                        'Klik untuk cari tahu daftar obat dan vitamin untuk meringankan gejala bagi pasien isolasi mandiri',
+                        'Selalu patuhi protokol kesehatan, minum multivitamin bila perlu untuk menjaga daya tahan tubuh anda',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: View.x * 3.5,

@@ -1,6 +1,8 @@
 import 'package:covid_statistics/ui/widgets/app_colors.dart';
 import 'package:covid_statistics/ui/widgets/view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:webfeed/domain/rss_item.dart';
 
 class DetailNewsPage extends StatelessWidget {
@@ -67,7 +69,16 @@ class DetailNewsPage extends StatelessWidget {
     return SliverToBoxAdapter(
       child: Container(
         width: double.infinity,
-        // child: ,
+        padding: EdgeInsets.only(left: View.x * 4, right: View.x * 4),
+        child: Html(
+          data: rssItem.description,
+          style: {
+            "p": Style(
+              color: Colors.white,
+              textAlign: TextAlign.justify,
+            )
+          },
+        ),
       ),
     );
   }
@@ -87,6 +98,15 @@ class DetailNewsPage extends StatelessWidget {
               _dateTime(),
               _content(),
             ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: black,
+            onPressed: () async => await Share.share(
+                '${rssItem.title} , selengkapnya baca di ${rssItem.link}'),
+            child: Icon(
+              Icons.share,
+              color: Colors.white,
+            ),
           ),
         ),
       ),
