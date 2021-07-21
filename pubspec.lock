@@ -239,6 +239,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.10.0-nullsafety.2"
+  data_connection_checker:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: f6cf6834719b1a76f3746bdd926533352d5bd26c
+      url: "https://github.com/bobanalappat/data_connection_checker.git"
+    source: git
+    version: "0.3.4"
   dio:
     dependency: "direct main"
     description:
