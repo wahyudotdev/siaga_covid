@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:covid_statistics/data/covid_daily_statistics.dart';
+import '../data/covid_daily_statistics.dart';
 import 'package:dio/dio.dart';
 
 class ApiGlobal {

@@ -1,4 +1,4 @@
-import 'package:covid_statistics/ui/menu_page.dart';
+import 'features/menu_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {

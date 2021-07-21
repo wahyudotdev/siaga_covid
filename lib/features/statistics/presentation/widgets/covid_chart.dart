@@ -1,5 +1,5 @@
-import 'package:covid_statistics/data/covid_series.dart';
-import 'package:covid_statistics/utils/number_format.dart';
+import '../../../../data/covid_series.dart';
+import '../../../../utils/number_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';

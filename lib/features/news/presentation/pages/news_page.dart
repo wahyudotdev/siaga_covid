@@ -1,8 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:covid_statistics/repository/rss_news.dart';
-import 'package:covid_statistics/ui/news/detail_news_page.dart';
-import 'package:covid_statistics/ui/widgets/app_colors.dart';
-import 'package:covid_statistics/ui/widgets/view.dart';
+import '../../../../repository/rss_news.dart';
+import 'detail_news_page.dart';
+import '../../../../utils/app_colors.dart';
+import '../../../../utils/view.dart';
 import 'package:flutter/material.dart';
 import 'package:webfeed/domain/rss_feed.dart';
 import 'package:webfeed/domain/rss_item.dart';
