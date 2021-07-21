@@ -48,7 +48,7 @@ class _NewsPageState extends State<NewsPage> {
     );
   }
 
-  Widget _carouselNewsItem({RssItem rssItem}) {
+  Widget _carouselNewsItem({required RssItem rssItem}) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 5.0),
       child: Column(
@@ -68,7 +68,7 @@ class _NewsPageState extends State<NewsPage> {
                   )
                 ],
                 image: DecorationImage(
-                  image: NetworkImage(rssItem.enclosure.url),
+                  image: NetworkImage(rssItem.enclosure!.url!),
                   fit: BoxFit.fill,
                 ),
               ),
@@ -83,13 +83,13 @@ class _NewsPageState extends State<NewsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    rssItem.title,
+                    rssItem.title!,
                     style: TextStyle(
                       color: Colors.white,
                     ),
                   ),
                   Text(
-                    '${getWordMinute(rssItem.description)} min bacaan',
+                    '${getWordMinute(rssItem.description!)} min bacaan',
                     style: TextStyle(
                       color: Colors.grey,
                     ),
@@ -104,7 +104,7 @@ class _NewsPageState extends State<NewsPage> {
   }
 
   Widget _carouselNews() {
-    return rssFeed.items.length == 0
+    return rssFeed.items!.length == 0
         ? SliverToBoxAdapter(
             child: Container(
               child: Center(
@@ -122,9 +122,9 @@ class _NewsPageState extends State<NewsPage> {
                   autoPlay: true,
                 ),
                 items: [
-                  _carouselNewsItem(rssItem: rssFeed.items[0]),
-                  _carouselNewsItem(rssItem: rssFeed.items[1]),
-                  _carouselNewsItem(rssItem: rssFeed.items[2]),
+                  _carouselNewsItem(rssItem: rssFeed.items![0]),
+                  _carouselNewsItem(rssItem: rssFeed.items![1]),
+                  _carouselNewsItem(rssItem: rssFeed.items![2]),
                 ],
               ),
             ),
@@ -149,7 +149,7 @@ class _NewsPageState extends State<NewsPage> {
     );
   }
 
-  Widget _newsListItem({RssItem rssItem}) {
+  Widget _newsListItem({required RssItem rssItem}) {
     return InkWell(
       onTap: () => Navigator.push(
         context,
@@ -191,7 +191,7 @@ class _NewsPageState extends State<NewsPage> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(View.x * 3),
                     image: DecorationImage(
-                      image: NetworkImage(rssItem.enclosure.url),
+                      image: NetworkImage(rssItem.enclosure!.url!),
                       fit: BoxFit.fill,
                     ),
                     color: black,
@@ -226,7 +226,7 @@ class _NewsPageState extends State<NewsPage> {
                         right: View.x * 3,
                       ),
                       child: Text(
-                        rssItem.title,
+                        rssItem.title!,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: View.x * 4,
@@ -236,7 +236,7 @@ class _NewsPageState extends State<NewsPage> {
                     ),
                     Container(
                       child: Text(
-                        '${getWordMinute(rssItem.description)} min bacaan',
+                        '${getWordMinute(rssItem.description!)} min bacaan',
                         style: TextStyle(
                           color: Colors.grey,
                           fontSize: View.x * 3.5,
@@ -254,7 +254,7 @@ class _NewsPageState extends State<NewsPage> {
   }
 
   Widget _newsList() {
-    return rssFeed.items.length == 0
+    return rssFeed.items!.length == 0
         ? SliverToBoxAdapter(
             child: Container(
               child: Center(
@@ -266,9 +266,9 @@ class _NewsPageState extends State<NewsPage> {
             itemExtent: View.y * 20,
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                return _newsListItem(rssItem: rssFeed.items[index]);
+                return _newsListItem(rssItem: rssFeed.items![index]);
               },
-              childCount: rssFeed.items.length,
+              childCount: rssFeed.items!.length,
             ),
           );
   }

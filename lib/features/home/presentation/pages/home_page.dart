@@ -160,7 +160,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _contentBox({String hint, String imagePath}) {
+  Widget _contentBox({required String hint, required String imagePath}) {
     return Expanded(
       flex: 1,
       child: Container(

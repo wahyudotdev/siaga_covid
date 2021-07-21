@@ -15,9 +15,9 @@ class CovidDailyStatistics {
     this.active = 0,
   });
 
-  final String provinceState;
-  final String countryRegion;
-  final DateTime lastUpdate;
+  final String? provinceState;
+  final String? countryRegion;
+  final DateTime? lastUpdate;
   final int confirmed;
   final int deaths;
   final int recovered;
@@ -40,7 +40,7 @@ class CovidDailyStatistics {
   Map<String, dynamic> toMap() => {
         "provinceState": provinceState,
         "countryRegion": countryRegion,
-        "lastUpdate": lastUpdate.toIso8601String(),
+        "lastUpdate": lastUpdate!.toIso8601String(),
         "confirmed": confirmed,
         "deaths": deaths,
         "recovered": recovered,

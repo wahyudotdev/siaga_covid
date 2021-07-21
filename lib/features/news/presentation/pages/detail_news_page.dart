@@ -6,8 +6,8 @@ import 'package:share_plus/share_plus.dart';
 import 'package:webfeed/domain/rss_item.dart';
 
 class DetailNewsPage extends StatelessWidget {
-  final RssItem rssItem;
-  const DetailNewsPage({Key key, this.rssItem}) : super(key: key);
+  final RssItem? rssItem;
+  const DetailNewsPage({Key? key, this.rssItem}) : super(key: key);
 
   Widget _image() {
     return SliverToBoxAdapter(
@@ -26,7 +26,7 @@ class DetailNewsPage extends StatelessWidget {
             ),
           ],
           image: DecorationImage(
-            image: NetworkImage(rssItem.enclosure.url),
+            image: NetworkImage(rssItem!.enclosure!.url!),
             fit: BoxFit.fill,
           ),
         ),
@@ -43,7 +43,7 @@ class DetailNewsPage extends StatelessWidget {
           right: View.x * 5,
         ),
         child: Text(
-          rssItem.title,
+          rssItem!.title!,
           style: TextStyle(color: Colors.white, fontSize: View.x * 5),
         ),
       ),
@@ -56,7 +56,7 @@ class DetailNewsPage extends StatelessWidget {
         width: double.infinity,
         padding: EdgeInsets.all(View.x * 5),
         child: Text(
-          rssItem.pubDate,
+          rssItem!.pubDate!,
           style: TextStyle(
             color: Colors.grey,
           ),
@@ -71,7 +71,7 @@ class DetailNewsPage extends StatelessWidget {
         width: double.infinity,
         padding: EdgeInsets.only(left: View.x * 4, right: View.x * 4),
         child: Html(
-          data: rssItem.description,
+          data: rssItem!.description,
           style: {
             "p": Style(
               color: Colors.white,
@@ -102,7 +102,7 @@ class DetailNewsPage extends StatelessWidget {
           floatingActionButton: FloatingActionButton(
             backgroundColor: black,
             onPressed: () async => await Share.share(
-                '${rssItem.title} , selengkapnya baca di ${rssItem.link}'),
+                '${rssItem!.title} , selengkapnya baca di ${rssItem!.link}'),
             child: Icon(
               Icons.share,
               color: Colors.white,

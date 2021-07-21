@@ -36,7 +36,7 @@ class _StatisticPageState extends State<StatisticPage> {
           realtimeData = result
               .firstWhere((element) => element.countryRegion == 'Indonesia');
           data.add(CovidSeries(
-            date: realtimeData.lastUpdate.day.toString(),
+            date: realtimeData.lastUpdate!.day.toString(),
             confirmed: realtimeData.confirmed,
             color: charts.ColorUtil.fromDartColor(lightblue),
           ));
@@ -53,7 +53,7 @@ class _StatisticPageState extends State<StatisticPage> {
       var result =
           element.firstWhere((element) => element.countryRegion == 'Indonesia');
       d.add(CovidSeries(
-        date: result.lastUpdate.day.toString(),
+        date: result.lastUpdate!.day.toString(),
         confirmed: result.confirmed,
         color: charts.ColorUtil.fromDartColor(lightblue),
       ));
@@ -84,7 +84,7 @@ class _StatisticPageState extends State<StatisticPage> {
       int _confirmed = 0;
       element.forEach((element) => _confirmed += element.confirmed);
       d.add(CovidSeries(
-        date: element.first.lastUpdate.day.toString(),
+        date: element.first.lastUpdate!.day.toString(),
         confirmed: _confirmed,
         color: charts.ColorUtil.fromDartColor(lightblue),
       ));
@@ -157,7 +157,7 @@ class _StatisticPageState extends State<StatisticPage> {
     );
   }
 
-  Widget _singleStatsBox({String hint, String count, Color color}) {
+  Widget _singleStatsBox({required String hint, required String count, Color? color}) {
     return Container(
       decoration: BoxDecoration(
         color: color,

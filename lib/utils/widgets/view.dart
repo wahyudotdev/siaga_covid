@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:flutter/services.dart';
 
 class View {
   late MediaQueryData _mediaQueryData;
-  static late double x;
-  static late double y;
+  static double? x;
+  static double? y;
   void init(BuildContext context) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
