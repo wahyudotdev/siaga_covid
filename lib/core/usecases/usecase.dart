@@ -1,4 +1,4 @@
-import 'package:covid_statistics/core/error/failure.dart';
+import '../error/failure.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class UseCase<Type, Params> {

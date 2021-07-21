@@ -1,5 +1,6 @@
-import 'features/menu_page.dart';
 import 'package:flutter/material.dart';
+
+import 'features/menu_page.dart';
 
 void main() {
   runApp(MyApp());

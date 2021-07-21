@@ -1,0 +1,10 @@
+[
+    {
+        "countryRegion": "Test",
+        "lastUpdate": "2021-07-21 08:00:00",
+        "confirmed": "100",
+        "deaths": "100",
+        "recovered": "100",
+        "active": "100"
+    }
+]

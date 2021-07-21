@@ -1,20 +1,29 @@
 import 'package:equatable/equatable.dart';
 
 class CovidStatistics extends Equatable {
-  final String? countryRegion;
-  final DateTime? lastUpdate;
-  final int? confirmed;
-  final int? deaths;
-  final int? recovered;
-  final int? active;
+  final List<CovidStatisticItem> items;
 
-  CovidStatistics({
-    this.countryRegion,
-    this.lastUpdate,
-    this.confirmed,
-    this.deaths,
-    this.recovered,
-    this.active,
+  CovidStatistics(this.items);
+
+  @override
+  List<Object?> get props => [items];
+}
+
+class CovidStatisticItem extends Equatable {
+  final String countryRegion;
+  final DateTime lastUpdate;
+  final int confirmed;
+  final int deaths;
+  final int recovered;
+  final int active;
+
+  CovidStatisticItem({
+    required this.countryRegion,
+    required this.lastUpdate,
+    required this.confirmed,
+    required this.deaths,
+    required this.recovered,
+    required this.active,
   });
 
   @override
