@@ -5,8 +5,6 @@
 import 'dart:async' as _i4;
 
 import 'package:covid_statistics/core/network/network_info.dart' as _i5;
-import 'package:covid_statistics/core/query_helper/date_param_helper.dart'
-    as _i6;
 import 'package:covid_statistics/features/statistics/data/datasources/covid_statistics_remote_datasource.dart'
     as _i3;
 import 'package:covid_statistics/features/statistics/data/models/covid_statistics_model.dart'
@@ -52,13 +50,4 @@ class MockNetworkInfo extends _i1.Mock implements _i5.NetworkInfo {
   _i4.Future<bool> get isConnected =>
       (super.noSuchMethod(Invocation.getter(#isConnected),
           returnValue: Future<bool>.value(false)) as _i4.Future<bool>);
-}
-
-/// A class which mocks [GetDateParam].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockGetDateParam extends _i1.Mock implements _i6.GetDateParam {
-  MockGetDateParam() {
-    _i1.throwOnMissingStub(this);
-  }
 }

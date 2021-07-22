@@ -41,7 +41,4 @@ class CovidStatisticsModel extends CovidStatistics implements Equatable {
         .toList();
     return json.encode(jsonMap);
   }
-
-  @override
-  List<Object> get props => [this.items];
 }

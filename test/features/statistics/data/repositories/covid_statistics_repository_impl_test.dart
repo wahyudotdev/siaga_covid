@@ -21,15 +21,7 @@ void main() {
   late MockCovidStatisticsRemoteDataSource remoteDataSource;
   late MockNetworkInfo networkInfo;
   late CovidStatisticsRepositoryImpl repository;
-  final daysOfWeek = [
-    '07-14-2021',
-    '07-14-2021',
-    '07-14-2021',
-    '07-14-2021',
-    '07-14-2021',
-    '07-14-2021',
-    '07-14-2021',
-  ];
+
   setUp(() {
     remoteDataSource = MockCovidStatisticsRemoteDataSource();
     networkInfo = MockNetworkInfo();

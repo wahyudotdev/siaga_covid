@@ -5,18 +5,9 @@ import 'package:covid_statistics/features/statistics/domain/entities/covid_stati
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../fixtures/fixture_reader.dart';
+import '../../dummy/covid_statistics_dummy.dart';
 
 void main() {
-  final tCovidStatisticsModel = CovidStatisticsModel([
-    CovidStatisticItem(
-      countryRegion: 'Test',
-      active: 100,
-      confirmed: 100,
-      deaths: 100,
-      recovered: 100,
-      lastUpdate: DateTime.parse('2021-07-21 08:00:00'),
-    ),
-  ]);
   test(
     'should be a subclass of CovidStatistics entities',
     () => expect(tCovidStatisticsModel, isA<CovidStatistics>()),
