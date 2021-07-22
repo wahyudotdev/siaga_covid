@@ -41,4 +41,12 @@ class MockCovidStatisticsRepository extends _i1.Mock
                   Future<_i2.Either<_i5.Failure, _i6.CovidStatistics>>.value(
                       _FakeEither<_i5.Failure, _i6.CovidStatistics>()))
           as _i4.Future<_i2.Either<_i5.Failure, _i6.CovidStatistics>>);
+  @override
+  _i4.Future<_i2.Either<_i5.Failure, List<_i6.CovidStatistics>>>
+      getCovidStatisticsOfWeek(List<String>? date) => (super.noSuchMethod(
+          Invocation.method(#getCovidStatisticsOfWeek, [date]),
+          returnValue:
+              Future<_i2.Either<_i5.Failure, List<_i6.CovidStatistics>>>.value(
+                  _FakeEither<_i5.Failure, List<_i6.CovidStatistics>>())) as _i4
+          .Future<_i2.Either<_i5.Failure, List<_i6.CovidStatistics>>>);
 }

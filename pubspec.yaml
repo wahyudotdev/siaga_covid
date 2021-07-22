@@ -23,13 +23,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  data_connection_checker:
+    git:
+      url: https://github.com/bobanalappat/data_connection_checker.git
   webfeed:
     git:
       url: https://github.com/wahyudotdev/webfeed.git
   bubble_tab_indicator: ^0.1.6
   carousel_slider: ^4.0.0
   charts_flutter: ^0.11.0
+  clock: ^1.1.0
   cupertino_icons: ^1.0.3
+  dartz: ^0.10.0-nullsafety.2
   dio: ^4.0.0
   equatable: ^2.0.3
   flutter_bloc: ^7.0.1
@@ -38,17 +43,13 @@ dependencies:
   http: ^0.13.3
   share_plus: ^2.1.4
   url_launcher: ^6.0.9
-  dartz: ^0.10.0-nullsafety.2
-  data_connection_checker:
-    git:
-      url: https://github.com/bobanalappat/data_connection_checker.git
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner: ^2.0.6
   flutter_launcher_icons: "^0.9.0"
   mockito: ^5.0.11
-  build_runner: ^2.0.6
 flutter_icons:
   android: true
   ios: true

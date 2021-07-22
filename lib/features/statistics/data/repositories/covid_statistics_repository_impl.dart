@@ -23,4 +23,19 @@ class CovidStatisticsRepositoryImpl implements CovidStatisticsRepository {
       return Left(ServerFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, List<CovidStatistics>>> getCovidStatisticsOfWeek(
+      List<String> date) async {
+    try {
+      List<CovidStatistics> list = [];
+      for (var element in date) {
+        final result = await remoteDataSource.getCovidStatistics(element);
+        list.add(result);
+      }
+      return Right(list);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
 }

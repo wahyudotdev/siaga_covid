@@ -1,15 +1,15 @@
-import '../../../../data/covid_daily_statistics.dart';
-import '../../../../data/covid_series.dart';
-import '../../../../repository/api_global.dart';
-import '../widgets/covid_chart.dart';
-import '../../../../utils/app_colors.dart';
-import '../../../../utils/view.dart';
-import '../../../../utils/constant.dart';
-import '../../../../utils/number_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import '../widgets/covid_chart.dart';
+import '../../../../data/covid_daily_statistics.dart';
+import '../../../../data/covid_series.dart';
+import '../../../../repository/api_global.dart';
+import '../../../../utils/app_colors.dart';
+import '../../../../utils/view.dart';
+import '../../../../utils/constant.dart';
+import '../../../../utils/number_format.dart';
 
 class StatisticPage extends StatefulWidget {
   @override
@@ -157,7 +157,8 @@ class _StatisticPageState extends State<StatisticPage> {
     );
   }
 
-  Widget _singleStatsBox({required String hint, required String count, Color? color}) {
+  Widget _singleStatsBox(
+      {required String hint, required String count, Color? color}) {
     return Container(
       decoration: BoxDecoration(
         color: color,
