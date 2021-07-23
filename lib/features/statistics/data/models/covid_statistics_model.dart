@@ -10,19 +10,23 @@ class CovidStatisticsModel extends CovidStatistics implements Equatable {
 
   factory CovidStatisticsModel.fromJsonString(String jsonString) {
     List<dynamic> jsonData = json.decode(jsonString);
-    final items = jsonData
-        .map(
-          (data) => CovidStatisticItem(
-            countryRegion: data['countryRegion'],
-            active: int.parse(data['active']),
-            confirmed: int.parse(data['confirmed']),
-            deaths: int.parse(data['deaths']),
-            lastUpdate: DateTime.parse(data['lastUpdate']),
-            recovered: int.parse(data['recovered']),
-          ),
-        )
-        .toList();
-    return CovidStatisticsModel(items);
+    if (jsonData.length > 0) {
+      final items = jsonData
+          .map(
+            (data) => CovidStatisticItem(
+              countryRegion: data['countryRegion'],
+              active: int.tryParse(data['active']) ?? 0,
+              confirmed: int.tryParse(data['confirmed']) ?? 0,
+              deaths: int.tryParse(data['deaths']) ?? 0,
+              lastUpdate: DateTime.parse(data['lastUpdate']),
+              recovered: int.tryParse(data['recovered']) ?? 0,
+            ),
+          )
+          .toList();
+      return CovidStatisticsModel(items);
+    } else {
+      return CovidStatisticsModel([]);
+    }
   }
 
   toJsonString() {

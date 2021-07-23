@@ -1,9 +1,10 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:covid_statistics/utils/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../data/covid_series.dart';
+import '../../domain/entities/covid_series.dart';
 import '../../../../utils/number_format.dart';
 
 class CovidChart extends StatelessWidget {
@@ -18,7 +19,7 @@ class CovidChart extends StatelessWidget {
         data: data!,
         domainFn: (series, _) => series.date,
         measureFn: (series, _) => series.confirmed,
-        colorFn: (series, _) => series.color!,
+        colorFn: (series, _) => charts.ColorUtil.fromDartColor(lightblue),
       ),
     ];
     final simpleFormatter =

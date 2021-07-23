@@ -7,7 +7,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../fixtures/fixture_reader.dart';
 import '../../dummy/covid_statistics_dummy.dart';
-import '../../dummy/covid_summary_dummy.dart';
 
 void sum(CovidSummary summary) {}
 void main() {
@@ -36,6 +35,19 @@ void main() {
       // assert
       final expected = json.decode(fixture('covid_statistics.json'));
       expect(result, expected);
+    },
+  );
+
+  test(
+    'should return an empty array when supplied with empty json response',
+    () async {
+      // arrange
+      final result = CovidStatisticsModel.fromJsonString(
+          fixture('covid_statistics_empty.json'));
+      // act
+      final expected = CovidStatisticsModel([]);
+      // assert
+      expect(result, equals(expected));
     },
   );
 }

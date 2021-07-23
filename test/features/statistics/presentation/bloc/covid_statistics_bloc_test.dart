@@ -23,12 +23,10 @@ void main() {
   late CovidStatisticsBloc bloc;
   final covidStatisticsOfWeek = MockGetCovidStatisticsOfWeek();
   final dateParam = MockGetDateParam();
-  final listShorter = MockShortList();
   setUp(() {
     bloc = CovidStatisticsBloc(
       covidStatisticsOfWeek: covidStatisticsOfWeek,
       getDateParam: dateParam,
-      shortList: listShorter,
     );
   });
 
@@ -52,13 +50,12 @@ void main() {
     );
 
     test(
-      'should emit [LoadingStatistics, LoadedStatistics, LoadedSummary] when data emit successfully',
+      'should emit [LoadingStatistics, LoadedStatistics, LoadedSummaryWorld, LoadedSummaryByCountry] in order when data emit successfully',
       () async {
         // arrange
         when(dateParam.daysOfWeek()).thenReturn(daysOfWeek);
         when(covidStatisticsOfWeek(any))
             .thenAnswer((_) async => Right([tCovidStatistics]));
-        when(listShorter.shortByDate(any)).thenReturn([tCovidStatistics]);
         final expected = [
           LoadingStatistics(),
           LoadedStatistics(data: [tCovidStatistics]),
@@ -69,10 +66,11 @@ void main() {
         expectLater(bloc.stream, emitsInOrder(expected));
         // act
         bloc.add(CovidStatisticsOfWeekEvent());
+        await untilCalled(covidStatisticsOfWeek(any));
       },
     );
     test(
-      'should emit [LoadingStatistics, Error] when get ServerFailure',
+      'should emit [LoadingStatistics, Error] in order when get ServerFailure',
       () async {
         when(dateParam.daysOfWeek()).thenReturn(daysOfWeek);
         when(covidStatisticsOfWeek(any))
@@ -81,10 +79,12 @@ void main() {
           LoadingStatistics(),
           Error(),
         ];
-        // assert
+        // assert later
         expectLater(bloc.stream, emitsInOrder(expected));
         // act
         bloc.add(CovidStatisticsOfWeekEvent());
+        await untilCalled(covidStatisticsOfWeek(any));
+        verify(covidStatisticsOfWeek(any));
       },
     );
   });

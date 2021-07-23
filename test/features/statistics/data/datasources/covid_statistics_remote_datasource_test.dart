@@ -9,7 +9,7 @@ import 'package:mockito/mockito.dart';
 
 import '../../../../fixtures/fixture_reader.dart';
 import '../../dummy/covid_statistics_dummy.dart';
-import 'covid_statistics_remote_test.mocks.dart';
+import 'covid_statistics_remote_datasource_test.mocks.dart';
 
 @GenerateMocks([], customMocks: [
   MockSpec<Client>(as: #MockHttpClient),
@@ -59,6 +59,19 @@ void main() {
       final call = dataSource.getCovidStatistics;
       // assert
       expect(() => call(tCovidDate), throwsA(TypeMatcher<ServerException>()));
+    },
+  );
+
+  test(
+    'should return a [FormatException] when data is Empty',
+    () async {
+      // arrange
+      when(client.get(any)).thenAnswer((_) async =>
+          Response(fixture('covid_statistics_empty.json'), HttpStatus.ok));
+      // act
+      final call = dataSource.getCovidStatistics;
+      // assert
+      expect(() => call(tCovidDate), throwsA(TypeMatcher<FormatException>()));
     },
   );
 }

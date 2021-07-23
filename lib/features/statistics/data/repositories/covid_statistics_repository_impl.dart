@@ -1,5 +1,6 @@
 import 'package:covid_statistics/core/error/exception.dart';
 import 'package:covid_statistics/core/network/network_info.dart';
+import 'package:covid_statistics/core/utils/short_list.dart';
 import 'package:covid_statistics/features/statistics/data/datasources/covid_statistics_remote_datasource.dart';
 import 'package:covid_statistics/features/statistics/domain/entities/covid_statistics.dart';
 import 'package:covid_statistics/core/error/failure.dart';
@@ -9,9 +10,11 @@ import 'package:dartz/dartz.dart';
 class CovidStatisticsRepositoryImpl implements CovidStatisticsRepository {
   final CovidStatisticsRemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
+  final ShortList shortList;
   CovidStatisticsRepositoryImpl({
     required this.remoteDataSource,
     required this.networkInfo,
+    required this.shortList,
   });
   @override
   Future<Either<Failure, CovidStatistics>> getCovidStatistics(
@@ -30,10 +33,12 @@ class CovidStatisticsRepositoryImpl implements CovidStatisticsRepository {
     try {
       List<CovidStatistics> list = [];
       for (var element in date) {
-        final result = await remoteDataSource.getCovidStatistics(element);
-        list.add(result);
+        try {
+          final result = await remoteDataSource.getCovidStatistics(element);
+          list.add(result);
+        } on FormatException {}
       }
-      return Right(list);
+      return Right(shortList.shortByDate(list));
     } on ServerException {
       return Left(ServerFailure());
     }

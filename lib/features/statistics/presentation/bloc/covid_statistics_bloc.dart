@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:covid_statistics/core/query_helper/date_param_helper.dart';
-import 'package:covid_statistics/core/utils/short_list.dart';
 import 'package:covid_statistics/features/statistics/data/models/covid_summary_model.dart';
 import 'package:covid_statistics/features/statistics/domain/entities/covid_statistics.dart';
 import 'package:covid_statistics/features/statistics/domain/entities/covid_summary.dart';
@@ -17,12 +16,10 @@ class CovidStatisticsBloc
     extends Bloc<CovidStatisticsEvent, CovidStatisticsState> {
   final GetCovidStatisticsOfWeek covidStatisticsOfWeek;
   final GetDateParam getDateParam;
-  final ShortList shortList;
 
   CovidStatisticsBloc({
     required this.covidStatisticsOfWeek,
     required this.getDateParam,
-    required this.shortList,
   }) : super(Empty());
 
   CovidStatisticsState get initialState => Empty();
@@ -41,11 +38,12 @@ class CovidStatisticsBloc
       }, (data) async* {
         yield LoadedStatistics(data: data);
         yield LoadedSummaryWorld(
-            data: CovidSummaryModel.fromStatistics(
-                statistics: shortList.shortByDate(data)));
+            data: CovidSummaryModel.fromStatistics(statistics: data));
         yield LoadedSummaryByCountry(
           data: CovidSummaryModel.fromStatistics(
-              statistics: shortList.shortByDate(data), country: CONFIG_COUNTRY),
+            statistics: data,
+            country: CONFIG_COUNTRY,
+          ),
         );
       });
     }

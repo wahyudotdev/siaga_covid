@@ -1,6 +1,7 @@
 import 'package:covid_statistics/core/error/exception.dart';
 import 'package:covid_statistics/core/error/failure.dart';
 import 'package:covid_statistics/core/network/network_info.dart';
+import 'package:covid_statistics/core/utils/short_list.dart';
 import 'package:covid_statistics/features/statistics/data/datasources/covid_statistics_remote_datasource.dart';
 import 'package:covid_statistics/features/statistics/data/repositories/covid_statistics_repository_impl.dart';
 import 'package:covid_statistics/features/statistics/domain/entities/covid_statistics.dart';
@@ -11,23 +12,26 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../dummy/covid_statistics_dummy.dart';
-import 'covid_statistics_repository_impl_test.mocks.dart';
+import 'covid_statistics_repository_impl.mocks.dart';
 
 @GenerateMocks([
   CovidStatisticsRemoteDataSource,
   NetworkInfo,
+  ShortList,
 ])
 void main() {
   late MockCovidStatisticsRemoteDataSource remoteDataSource;
   late MockNetworkInfo networkInfo;
   late CovidStatisticsRepositoryImpl repository;
-
+  late MockShortList shortList;
   setUp(() {
     remoteDataSource = MockCovidStatisticsRemoteDataSource();
     networkInfo = MockNetworkInfo();
+    shortList = MockShortList();
     repository = CovidStatisticsRepositoryImpl(
       remoteDataSource: remoteDataSource,
       networkInfo: networkInfo,
+      shortList: shortList,
     );
   });
 
@@ -64,14 +68,14 @@ void main() {
     test(
       'should return list of [CovidStatistics] in a week when call to remote data is success',
       () async {
+        final expected = List<CovidStatistics>.filled(
+            daysOfWeek.length, tCovidStatisticsModel);
         // arrange
         when(remoteDataSource.getCovidStatistics(any))
             .thenAnswer((_) async => tCovidStatisticsModel);
+        when(shortList.shortByDate(any)).thenReturn(expected);
         // act
-
         final result = await repository.getCovidStatisticsOfWeek(daysOfWeek);
-        final expected = List<CovidStatistics>.filled(
-            daysOfWeek.length, tCovidStatisticsModel);
         // assert
         expect(true, equals(listEquals(result.toIterable().single, expected)));
       },
@@ -88,6 +92,24 @@ void main() {
         // assert
         verify(repository.getCovidStatisticsOfWeek(daysOfWeek));
         expect(result, equals(Left(ServerFailure())));
+      },
+    );
+    test(
+      'should skip the data when returning [FormatException] and continue to request when daysOfWeek list is not end',
+      () async {
+        // arrange
+        final expected = List<CovidStatistics>.filled(
+            daysOfWeek.length - 1, tCovidStatistics);
+        when(remoteDataSource.getCovidStatistics(argThat(equals(tCovidDate))))
+            .thenThrow(FormatException());
+        when(remoteDataSource
+                .getCovidStatistics(argThat(isNot(equals(tCovidDate)))))
+            .thenAnswer((realInvocation) async => tCovidStatisticsModel);
+        when(shortList.shortByDate(any)).thenReturn(expected);
+        // act
+        final result = await repository.getCovidStatisticsOfWeek(daysOfWeek);
+        // assert
+        expect(result.toIterable().first.length, equals(expected.length));
       },
     );
   });

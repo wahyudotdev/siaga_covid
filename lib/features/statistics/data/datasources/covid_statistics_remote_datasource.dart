@@ -22,7 +22,12 @@ class CovidStatisticsRemoteDataSourceImpl
     final response =
         await httpClient.get(Uri.parse(SERVER_API_BASE_URL + '/$date'));
     if (response.statusCode == HttpStatus.ok) {
-      return CovidStatisticsModel.fromJsonString(response.body);
+      final result = CovidStatisticsModel.fromJsonString(response.body);
+      if (result.items.isEmpty) {
+        throw FormatException();
+      } else {
+        return result;
+      }
     } else {
       throw ServerException();
     }

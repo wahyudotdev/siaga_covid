@@ -1,15 +1,17 @@
+import 'package:covid_statistics/features/statistics/presentation/bloc/covid_statistics_bloc.dart';
+import 'package:covid_statistics/injection_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../widgets/covid_chart.dart';
 import '../../../../data/covid_daily_statistics.dart';
-import '../../../../data/covid_series.dart';
+import '../../domain/entities/covid_series.dart';
 import '../../../../repository/api_global.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/view.dart';
 import '../../../../utils/constant.dart';
-import '../../../../utils/number_format.dart';
 
 class StatisticPage extends StatefulWidget {
   @override
@@ -17,6 +19,7 @@ class StatisticPage extends StatefulWidget {
 }
 
 class _StatisticPageState extends State<StatisticPage> {
+  final bloc = sl<CovidStatisticsBloc>();
   List<List<CovidDailyStatistics>> covidStatistics = [];
   CovidDailyStatistics realtimeData = CovidDailyStatistics();
   List<CovidSeries> data = [];
@@ -103,7 +106,7 @@ class _StatisticPageState extends State<StatisticPage> {
   @override
   void initState() {
     super.initState();
-    getDaysOfWeek();
+    // getDaysOfWeek();
   }
 
   Widget _title() {
@@ -190,34 +193,49 @@ class _StatisticPageState extends State<StatisticPage> {
 
   Widget _statisticGrid() {
     return SliverToBoxAdapter(
-      child: Container(
-        width: View.x * 100,
-        height: View.y * 35,
-        padding: EdgeInsets.all(View.x * 7),
-        child: GridView.count(
-          crossAxisCount: 2,
-          childAspectRatio: 2 / 1,
-          crossAxisSpacing: 5,
-          mainAxisSpacing: 5,
-          children: [
-            _singleStatsBox(
-                color: orange,
-                hint: 'Total',
-                count: numberFormat().format(realtimeData.confirmed)),
-            _singleStatsBox(
-                color: red2,
-                hint: 'Meninggal',
-                count: numberFormat().format(realtimeData.deaths)),
-            _singleStatsBox(
-                color: lightblue2,
-                hint: 'Aktif',
-                count: numberFormat().format(realtimeData.active)),
-            _singleStatsBox(
-                color: green,
-                hint: 'Sembuh',
-                count: numberFormat().format(realtimeData.recovered)),
-          ],
-        ),
+      child: BlocBuilder<CovidStatisticsBloc, CovidStatisticsState>(
+        builder: (context, state) {
+          print(state.runtimeType);
+          if (state is Empty) bloc.add(CovidStatisticsOfWeekEvent());
+          if (state is LoadedSummaryByCountry) {
+            return Container(
+              width: View.x * 100,
+              height: View.y * 35,
+              padding: EdgeInsets.all(View.x * 7),
+              child: GridView.count(
+                crossAxisCount: 2,
+                childAspectRatio: 2 / 1,
+                crossAxisSpacing: 5,
+                mainAxisSpacing: 5,
+                children: [
+                  _singleStatsBox(
+                    color: orange,
+                    hint: 'Total',
+                    count: state.data.confirmed,
+                  ),
+                  _singleStatsBox(
+                    color: red2,
+                    hint: 'Meninggal',
+                    count: state.data.deaths,
+                  ),
+                  _singleStatsBox(
+                    color: lightblue2,
+                    hint: 'Aktif',
+                    count: state.data.active,
+                  ),
+                  _singleStatsBox(
+                    color: green,
+                    hint: 'Sembuh',
+                    count: state.data.recovered,
+                  ),
+                ],
+              ),
+            );
+          }
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
     );
   }
@@ -273,15 +291,18 @@ class _StatisticPageState extends State<StatisticPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: darkblue,
-      child: CustomScrollView(
-        slivers: [
-          _title(),
-          _regionTabBar(),
-          _statisticGrid(),
-          _statisticChart(),
-        ],
+    return BlocProvider(
+      create: (context) => bloc,
+      child: Container(
+        color: darkblue,
+        child: CustomScrollView(
+          slivers: [
+            _title(),
+            _regionTabBar(),
+            _statisticGrid(),
+            _statisticChart(),
+          ],
+        ),
       ),
     );
   }
