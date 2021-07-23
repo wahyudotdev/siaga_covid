@@ -29,7 +29,7 @@ class CovidStatisticsModel extends CovidStatistics implements Equatable {
     }
   }
 
-  toJsonString() {
+  String toJsonString() {
     final jsonMap = items
         .map(
           (e) => {

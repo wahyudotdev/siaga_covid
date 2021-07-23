@@ -23,7 +23,7 @@ final tCovidStatistics = CovidStatistics(tCovidStatisticItem);
 
 final tCovidStatisticsModel = CovidStatisticsModel(tCovidStatisticItem);
 
-final tCovidDate = '07-14-2021';
+final tCovidDate = '07-21-2021';
 final daysOfWeek = [
   '07-14-2021',
   '07-15-2021',

@@ -1,7 +1,8 @@
 import 'dart:io';
 
-import '../data/covid_daily_statistics.dart';
 import 'package:dio/dio.dart';
+
+import '../data/covid_daily_statistics.dart';
 
 class ApiGlobal {
   final String date;

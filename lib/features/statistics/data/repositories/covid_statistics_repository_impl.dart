@@ -1,10 +1,10 @@
-import 'package:covid_statistics/core/error/exception.dart';
-import 'package:covid_statistics/core/network/network_info.dart';
-import 'package:covid_statistics/core/utils/short_list.dart';
-import 'package:covid_statistics/features/statistics/data/datasources/covid_statistics_remote_datasource.dart';
-import 'package:covid_statistics/features/statistics/domain/entities/covid_statistics.dart';
-import 'package:covid_statistics/core/error/failure.dart';
-import 'package:covid_statistics/features/statistics/domain/repositories/covid_statistics_repository.dart';
+import '../../../../core/error/exception.dart';
+import '../../../../core/network/network_info.dart';
+import '../../../../core/utils/short_list.dart';
+import '../datasources/covid_statistics_remote_datasource.dart';
+import '../../domain/entities/covid_statistics.dart';
+import '../../../../core/error/failure.dart';
+import '../../domain/repositories/covid_statistics_repository.dart';
 import 'package:dartz/dartz.dart';
 
 class CovidStatisticsRepositoryImpl implements CovidStatisticsRepository {

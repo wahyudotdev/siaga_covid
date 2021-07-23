@@ -1,6 +1,6 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:covid_statistics/utils/app_colors.dart';
+import '../../../../utils/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

@@ -1,5 +1,5 @@
-import 'package:covid_statistics/features/statistics/domain/entities/covid_statistics.dart';
-import 'package:covid_statistics/features/statistics/domain/entities/covid_summary.dart';
+import '../../domain/entities/covid_statistics.dart';
+import '../../domain/entities/covid_summary.dart';
 
 class CovidSummaryModel extends CovidSummary {
   final String confirmed;

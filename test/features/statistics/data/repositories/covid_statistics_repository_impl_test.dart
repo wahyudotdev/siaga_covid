@@ -12,7 +12,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../dummy/covid_statistics_dummy.dart';
-import 'covid_statistics_repository_impl.mocks.dart';
+import 'covid_statistics_repository_impl_test.mocks.dart';
 
 @GenerateMocks([
   CovidStatisticsRemoteDataSource,
@@ -41,11 +41,11 @@ void main() {
       () async {
         // arrange
         when(remoteDataSource.getCovidStatistics(any))
-            .thenAnswer((_) async => tCovidStatisticsModel);
+            .thenAnswer((_) async => tCovidStatistics);
         // act
         final result = await repository.getCovidStatistics(tCovidDate);
         // assert
-        expect(result, equals(Right(tCovidStatisticsModel)));
+        expect(result, equals(Right(tCovidStatistics)));
       },
     );
 

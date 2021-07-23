@@ -1,13 +1,13 @@
-import 'package:covid_statistics/features/statistics/presentation/bloc/covid_statistics_bloc.dart';
-import 'package:covid_statistics/injection_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../bloc/covid_statistics_bloc.dart';
 import '../widgets/covid_chart.dart';
-import '../../../../data/covid_daily_statistics.dart';
 import '../../domain/entities/covid_series.dart';
+import '../../../../injection_container.dart';
+import '../../../../data/covid_daily_statistics.dart';
 import '../../../../repository/api_global.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/view.dart';
@@ -147,13 +147,7 @@ class _StatisticPageState extends State<StatisticPage> {
               Text('Indonesia'),
               Text('Global'),
             ],
-            onTap: (index) {
-              if (index == 0) {
-                countLocalStatistics();
-              } else {
-                countWorldStatistics();
-              }
-            },
+            onTap: null,
           ),
         ),
       ),
@@ -161,33 +155,40 @@ class _StatisticPageState extends State<StatisticPage> {
   }
 
   Widget _singleStatsBox(
-      {required String hint, required String count, Color? color}) {
+      {String? hint, String? count, Color? color, required bool isLoading}) {
     return Container(
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(View.x * 3),
       ),
       padding: EdgeInsets.all(View.x * 5),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Flexible(
-            flex: 1,
-            child: Text(
-              hint,
-              style: TextStyle(color: Colors.white, fontSize: View.x * 5),
+      child: isLoading
+          ? Container(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Flexible(
+                  flex: 1,
+                  child: Text(
+                    hint!,
+                    style: TextStyle(color: Colors.white, fontSize: View.x * 5),
+                  ),
+                ),
+                Flexible(
+                  flex: 1,
+                  child: Text(
+                    count!,
+                    style:
+                        TextStyle(color: Colors.white, fontSize: View.x * 4.5),
+                  ),
+                ),
+              ],
             ),
-          ),
-          Flexible(
-            flex: 1,
-            child: Text(
-              count,
-              style: TextStyle(color: Colors.white, fontSize: View.x * 4.5),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -212,28 +213,37 @@ class _StatisticPageState extends State<StatisticPage> {
                     color: orange,
                     hint: 'Total',
                     count: state.data.confirmed,
+                    isLoading: false,
                   ),
                   _singleStatsBox(
                     color: red2,
                     hint: 'Meninggal',
                     count: state.data.deaths,
+                    isLoading: false,
                   ),
                   _singleStatsBox(
                     color: lightblue2,
                     hint: 'Aktif',
                     count: state.data.active,
+                    isLoading: false,
                   ),
                   _singleStatsBox(
                     color: green,
                     hint: 'Sembuh',
                     count: state.data.recovered,
+                    isLoading: false,
                   ),
                 ],
               ),
             );
           }
-          return Center(
-            child: CircularProgressIndicator(),
+          return Container(
+            width: View.x * 100,
+            height: View.y * 35,
+            padding: EdgeInsets.all(View.x * 7),
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
           );
         },
       ),

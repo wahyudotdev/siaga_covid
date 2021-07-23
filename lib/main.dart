@@ -1,4 +1,4 @@
-import 'package:covid_statistics/injection_container.dart' as di;
+import 'injection_container.dart' as di;
 import 'package:flutter/material.dart';
 
 import 'features/menu_page.dart';

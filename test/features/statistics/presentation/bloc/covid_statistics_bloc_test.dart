@@ -10,7 +10,6 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../dummy/covid_statistics_dummy.dart';
-import '../../dummy/covid_summary_dummy.dart';
 import 'covid_statistics_bloc_test.mocks.dart';
 
 @GenerateMocks([
@@ -50,7 +49,7 @@ void main() {
     );
 
     test(
-      'should emit [LoadingStatistics, LoadedStatistics, LoadedSummaryWorld, LoadedSummaryByCountry] in order when data emit successfully',
+      'should emit [LoadingStatistics, LoadedStatistics] in order when data emit successfully',
       () async {
         // arrange
         when(dateParam.daysOfWeek()).thenReturn(daysOfWeek);
@@ -59,8 +58,6 @@ void main() {
         final expected = [
           LoadingStatistics(),
           LoadedStatistics(data: [tCovidStatistics]),
-          LoadedSummaryWorld(data: tCovidSummaryModel),
-          LoadedSummaryByCountry(data: tCovidSummaryModel),
         ];
         // assert
         expectLater(bloc.stream, emitsInOrder(expected));

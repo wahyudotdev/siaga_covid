@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:covid_statistics/core/query_helper/date_param_helper.dart';
-import 'package:covid_statistics/features/statistics/data/models/covid_summary_model.dart';
-import 'package:covid_statistics/features/statistics/domain/entities/covid_statistics.dart';
-import 'package:covid_statistics/features/statistics/domain/entities/covid_summary.dart';
-import 'package:covid_statistics/features/statistics/domain/usecases/get_covid_statistics_of_week.dart';
+import '../../../../core/query_helper/date_param_helper.dart';
+import '../../domain/entities/covid_statistics.dart';
+import '../../domain/entities/covid_summary.dart';
+import '../../domain/usecases/get_covid_statistics_of_week.dart';
 import 'package:equatable/equatable.dart';
 part 'covid_statistics_event.dart';
 part 'covid_statistics_state.dart';
@@ -37,14 +36,6 @@ class CovidStatisticsBloc
         yield Error();
       }, (data) async* {
         yield LoadedStatistics(data: data);
-        yield LoadedSummaryWorld(
-            data: CovidSummaryModel.fromStatistics(statistics: data));
-        yield LoadedSummaryByCountry(
-          data: CovidSummaryModel.fromStatistics(
-            statistics: data,
-            country: CONFIG_COUNTRY,
-          ),
-        );
       });
     }
   }

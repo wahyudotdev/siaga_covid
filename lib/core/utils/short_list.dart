@@ -1,4 +1,4 @@
-import 'package:covid_statistics/features/statistics/domain/entities/covid_statistics.dart';
+import '../../features/statistics/domain/entities/covid_statistics.dart';
 
 class ShortList {
   List<CovidStatistics> shortByDate(List<CovidStatistics> list) {
