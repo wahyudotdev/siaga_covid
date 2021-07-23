@@ -58,6 +58,7 @@ void main() {
         when(dateParam.daysOfWeek()).thenReturn(daysOfWeek);
         when(covidStatisticsOfWeek(any))
             .thenAnswer((_) async => Right([tCovidStatistics]));
+        when(listShorter.shortByDate(any)).thenReturn([tCovidStatistics]);
         final expected = [
           LoadingStatistics(),
           LoadedStatistics(data: [tCovidStatistics]),

@@ -41,10 +41,12 @@ class CovidStatisticsBloc
       }, (data) async* {
         yield LoadedStatistics(data: data);
         yield LoadedSummaryWorld(
-            data: CovidSummaryModel.fromStatistics(statistics: data));
-        yield LoadedSummaryByCountry(
             data: CovidSummaryModel.fromStatistics(
-                statistics: data, country: CONFIG_COUNTRY));
+                statistics: shortList.shortByDate(data)));
+        yield LoadedSummaryByCountry(
+          data: CovidSummaryModel.fromStatistics(
+              statistics: shortList.shortByDate(data), country: CONFIG_COUNTRY),
+        );
       });
     }
   }
