@@ -9,8 +9,24 @@ abstract class CovidStatisticsState extends Equatable {
 
 class Empty extends CovidStatisticsState {}
 
-class Loading extends CovidStatisticsState {}
+class LoadingStatistics extends CovidStatisticsState {}
 
-class StatisticsLoaded extends CovidStatisticsState {}
+class LoadedStatistics extends CovidStatisticsState {
+  final List<CovidStatistics> data;
+
+  LoadedStatistics({required this.data});
+}
+
+class LoadedSummaryWorld extends CovidStatisticsState {
+  final CovidSummary data;
+
+  LoadedSummaryWorld({required this.data});
+}
+
+class LoadedSummaryByCountry extends CovidStatisticsState {
+  final CovidSummary data;
+
+  LoadedSummaryByCountry({required this.data});
+}
 
 class Error extends CovidStatisticsState {}

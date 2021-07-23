@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:covid_statistics/features/statistics/data/models/covid_statistics_model.dart';
 import 'package:covid_statistics/features/statistics/domain/entities/covid_statistics.dart';
 
@@ -13,7 +11,7 @@ final tCovidStatisticItem = [
     recovered: 100,
   ),
   CovidStatisticItem(
-    countryRegion: 'Test2',
+    countryRegion: 'Indonesia',
     active: 100,
     confirmed: 100,
     deaths: 100,
