@@ -3,8 +3,10 @@ import 'package:covid_statistics/core/error/failure.dart';
 import 'package:covid_statistics/core/network/network_info.dart';
 import 'package:covid_statistics/features/statistics/data/datasources/covid_statistics_local_datasource.dart';
 import 'package:covid_statistics/features/statistics/data/datasources/covid_statistics_remote_datasource.dart';
+import 'package:covid_statistics/features/statistics/data/models/covid_summary_model.dart';
 import 'package:covid_statistics/features/statistics/data/repositories/covid_statistics_repository_impl.dart';
 import 'package:covid_statistics/features/statistics/domain/entities/covid_statistics.dart';
+import 'package:covid_statistics/features/statistics/domain/entities/covid_summary.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -175,7 +177,6 @@ void main() {
       () async {
         final expected =
             List<CovidStatistics>.filled(daysOfWeek.length, tCovidStatistics);
-
         // arrange
         when(networkInfo.isConnected).thenAnswer((_) async => false);
         when(localDataSource.getCovidStatistics(any))
@@ -224,6 +225,61 @@ void main() {
         verify(networkInfo.isConnected);
         verify(localDataSource.getCovidStatistics(any));
         expect(result, Left(EmptyFailure()));
+      },
+    );
+  });
+
+  group('[getCovidSummary] Online test ', () {
+    test(
+      'should get [CovidSummary] from local storage when no country parameter supplied',
+      () async {
+        // arrange
+        final list = List<CovidStatistics>.filled(
+          daysOfWeek.length,
+          tCovidStatistics,
+        );
+        final model = CovidSummaryModel.fromStatistics(statistics: list);
+        final expectCovidSummary = CovidSummary(
+          confirmed: model.confirmed,
+          active: model.active,
+          deaths: model.deaths,
+          recovered: model.recovered,
+        );
+        when(localDataSource.getCovidStatistics(any))
+            .thenAnswer((realInvocation) async => tCovidStatistics);
+        // act
+        final result = await repository.getCovidSummary(daysOfWeek: daysOfWeek);
+        // assert
+        verify(localDataSource.getCovidStatistics(any));
+        expect(result, Right(expectCovidSummary));
+      },
+    );
+
+    test(
+      'should return a [CovidSummary] from local storage with spesified country',
+      () async {
+        // arrange
+        final covidStatisticsIndonesia = tCovidStatistics.items
+            .where((element) => element.countryRegion == COUNTRY_DATA)
+            .toList();
+        final list = List<CovidStatistics>.filled(
+            daysOfWeek.length, CovidStatistics(covidStatisticsIndonesia));
+        final model = CovidSummaryModel.fromStatistics(statistics: list);
+        final expectCovidSummary = CovidSummary(
+          confirmed: model.confirmed,
+          active: model.active,
+          deaths: model.deaths,
+          recovered: model.recovered,
+        );
+        when(localDataSource.getCovidStatistics(any))
+            .thenAnswer((realInvocation) async => tCovidStatistics);
+        // act
+        final result =
+            await repository.getCovidSummaryCountry(daysOfWeek: daysOfWeek);
+
+        // assert
+        verify(localDataSource.getCovidStatistics(any));
+        expect(result, Right(expectCovidSummary));
       },
     );
   });

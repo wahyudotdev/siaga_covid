@@ -1,8 +1,14 @@
+import 'package:covid_statistics/features/statistics/domain/entities/covid_summary.dart';
+
 import '../../../../core/error/failure.dart';
 import '../entities/covid_statistics.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class CovidStatisticsRepository {
   Future<Either<Failure, List<CovidStatistics>>> getCovidStatisticsOfWeek(
-      List<String> date);
+      List<String> daysOfWeek);
+  Future<Either<Failure, CovidSummary>> getCovidSummary(
+      {required List<String> daysOfWeek});
+  Future<Either<Failure, CovidSummary>> getCovidSummaryCountry(
+      {required List<String> daysOfWeek});
 }
