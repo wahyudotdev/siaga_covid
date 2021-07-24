@@ -1,4 +1,3 @@
-import 'package:covid_statistics/core/local_storage/local_storage.dart';
 import 'package:covid_statistics/features/statistics/data/datasources/covid_statistics_local_datasource.dart';
 import 'package:covid_statistics/features/statistics/data/models/covid_summary_model.dart';
 import 'package:covid_statistics/features/statistics/domain/entities/covid_summary.dart';
