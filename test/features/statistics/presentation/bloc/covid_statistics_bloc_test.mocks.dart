@@ -7,7 +7,6 @@ import 'dart:async' as _i5;
 import 'package:covid_statistics/core/error/failure.dart' as _i6;
 import 'package:covid_statistics/core/query_helper/date_param_helper.dart'
     as _i8;
-import 'package:covid_statistics/core/utils/short_list.dart' as _i9;
 import 'package:covid_statistics/features/statistics/domain/entities/covid_statistics.dart'
     as _i7;
 import 'package:covid_statistics/features/statistics/domain/repositories/covid_statistics_repository.dart'
@@ -65,20 +64,6 @@ class MockGetDateParam extends _i1.Mock implements _i8.GetDateParam {
   }
 }
 
-/// A class which mocks [ShortList].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockShortList extends _i1.Mock implements _i9.ShortList {
-  MockShortList() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  List<_i7.CovidStatistics> shortByDate(List<_i7.CovidStatistics>? list) =>
-      (super.noSuchMethod(Invocation.method(#shortByDate, [list]),
-          returnValue: <_i7.CovidStatistics>[]) as List<_i7.CovidStatistics>);
-}
-
 /// A class which mocks [CovidStatisticsRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -88,14 +73,6 @@ class MockCovidStatisticsRepository extends _i1.Mock
     _i1.throwOnMissingStub(this);
   }
 
-  @override
-  _i5.Future<_i3.Either<_i6.Failure, _i7.CovidStatistics>> getCovidStatistics(
-          String? date) =>
-      (super.noSuchMethod(Invocation.method(#getCovidStatistics, [date]),
-              returnValue:
-                  Future<_i3.Either<_i6.Failure, _i7.CovidStatistics>>.value(
-                      _FakeEither<_i6.Failure, _i7.CovidStatistics>()))
-          as _i5.Future<_i3.Either<_i6.Failure, _i7.CovidStatistics>>);
   @override
   _i5.Future<_i3.Either<_i6.Failure, List<_i7.CovidStatistics>>>
       getCovidStatisticsOfWeek(List<String>? date) => (super.noSuchMethod(

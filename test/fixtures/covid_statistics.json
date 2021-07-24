@@ -1,7 +1,7 @@
 [
     {
         "countryRegion": "Test",
-        "lastUpdate": "2021-07-21 08:00:00",
+        "lastUpdate": "2021-07-20 08:00:00",
         "confirmed": "100",
         "deaths": "100",
         "recovered": "100",
@@ -9,7 +9,7 @@
     },
     {
         "countryRegion": "Indonesia",
-        "lastUpdate": "2021-07-21 08:00:00",
+        "lastUpdate": "2021-07-20 08:00:00",
         "confirmed": "100",
         "deaths": "100",
         "recovered": "100",

@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../dummy/covid_statistics_dummy.dart';
-import 'get_covid_statistics_test.mocks.dart';
+import '../../presentation/bloc/covid_statistics_bloc_test.mocks.dart';
 
 void main() {
   late MockCovidStatisticsRepository repository;

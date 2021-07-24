@@ -7,7 +7,7 @@ final tCovidStatisticItem = [
     active: 100,
     confirmed: 100,
     deaths: 100,
-    lastUpdate: DateTime.parse("2021-07-21 08:00:00"),
+    lastUpdate: DateTime.parse("2021-07-20 08:00:00"),
     recovered: 100,
   ),
   CovidStatisticItem(
@@ -15,7 +15,7 @@ final tCovidStatisticItem = [
     active: 100,
     confirmed: 100,
     deaths: 100,
-    lastUpdate: DateTime.parse("2021-07-21 08:00:00"),
+    lastUpdate: DateTime.parse("2021-07-20 08:00:00"),
     recovered: 100,
   )
 ];
@@ -23,7 +23,7 @@ final tCovidStatistics = CovidStatistics(tCovidStatisticItem);
 
 final tCovidStatisticsModel = CovidStatisticsModel(tCovidStatisticItem);
 
-final tCovidDate = '07-21-2021';
+final tCovidDate = '07-20-2021';
 final daysOfWeek = [
   '07-14-2021',
   '07-15-2021',

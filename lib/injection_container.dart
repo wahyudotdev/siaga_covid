@@ -1,6 +1,8 @@
+import 'package:covid_statistics/core/local_storage/local_storage.dart';
+import 'package:covid_statistics/features/statistics/data/datasources/covid_statistics_local_datasource.dart';
+
 import 'core/network/network_info.dart';
 import 'core/query_helper/date_param_helper.dart';
-import 'core/utils/short_list.dart';
 import 'features/statistics/data/datasources/covid_statistics_remote_datasource.dart';
 import 'features/statistics/data/repositories/covid_statistics_repository_impl.dart';
 import 'features/statistics/domain/repositories/covid_statistics_repository.dart';
@@ -15,19 +17,20 @@ void init() {
   /// Util
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
   sl.registerLazySingleton<GetDateParam>(() => GetDateParam());
-  sl.registerLazySingleton<ShortList>(() => ShortList());
+  sl.registerLazySingleton<LocalStorage>(() => LocalStorageImpl());
 
   /// Datasource
   sl.registerLazySingleton<CovidStatisticsRemoteDataSource>(
-    () => CovidStatisticsRemoteDataSourceImpl(sl()),
-  );
+      () => CovidStatisticsRemoteDataSourceImpl(sl()));
+  sl.registerLazySingleton<CovidStatisticsLocalDataSource>(
+      () => CovidStatisticsLocalDataSourceImpl(sl()));
 
   /// Repository
   sl.registerLazySingleton<CovidStatisticsRepository>(
       () => CovidStatisticsRepositoryImpl(
             remoteDataSource: sl(),
+            localDataSource: sl(),
             networkInfo: sl(),
-            shortList: sl(),
           ));
 
   /// Usecase
@@ -41,6 +44,6 @@ void init() {
       ));
 
   /// External
-  sl.registerFactory(() => DataConnectionChecker());
-  sl.registerFactory(() => Client());
+  sl.registerSingleton(() => DataConnectionChecker());
+  sl.registerSingleton(() => Client());
 }

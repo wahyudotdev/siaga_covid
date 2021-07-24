@@ -1,7 +1,7 @@
 import 'package:covid_statistics/core/error/exception.dart';
 import 'package:covid_statistics/core/error/failure.dart';
 import 'package:covid_statistics/core/network/network_info.dart';
-import 'package:covid_statistics/core/utils/short_list.dart';
+import 'package:covid_statistics/features/statistics/data/datasources/covid_statistics_local_datasource.dart';
 import 'package:covid_statistics/features/statistics/data/datasources/covid_statistics_remote_datasource.dart';
 import 'package:covid_statistics/features/statistics/data/repositories/covid_statistics_repository_impl.dart';
 import 'package:covid_statistics/features/statistics/domain/entities/covid_statistics.dart';
@@ -16,55 +16,26 @@ import 'covid_statistics_repository_impl_test.mocks.dart';
 
 @GenerateMocks([
   CovidStatisticsRemoteDataSource,
+  CovidStatisticsLocalDataSource,
   NetworkInfo,
-  ShortList,
 ])
 void main() {
   late MockCovidStatisticsRemoteDataSource remoteDataSource;
+  late MockCovidStatisticsLocalDataSource localDataSource;
   late MockNetworkInfo networkInfo;
   late CovidStatisticsRepositoryImpl repository;
-  late MockShortList shortList;
   setUp(() {
     remoteDataSource = MockCovidStatisticsRemoteDataSource();
+    localDataSource = MockCovidStatisticsLocalDataSource();
     networkInfo = MockNetworkInfo();
-    shortList = MockShortList();
     repository = CovidStatisticsRepositoryImpl(
       remoteDataSource: remoteDataSource,
+      localDataSource: localDataSource,
       networkInfo: networkInfo,
-      shortList: shortList,
     );
   });
 
-  group('getCovidStatistics', () {
-    test(
-      'should return a [CovidStatistics] when call to remote data is success',
-      () async {
-        // arrange
-        when(remoteDataSource.getCovidStatistics(any))
-            .thenAnswer((_) async => tCovidStatistics);
-        // act
-        final result = await repository.getCovidStatistics(tCovidDate);
-        // assert
-        expect(result, equals(Right(tCovidStatistics)));
-      },
-    );
-
-    test(
-      'should throw a [ServerFailure] when there is [ServerException]',
-      () async {
-        // arrange
-        when(remoteDataSource.getCovidStatistics(any))
-            .thenThrow(ServerException());
-        // act
-        final result = await repository.getCovidStatistics(tCovidDate);
-        // assert
-        verify(repository.getCovidStatistics(tCovidDate));
-        expect(result, equals(Left(ServerFailure())));
-      },
-    );
-  });
-
-  group('getCovidStatisticsOfWeek', () {
+  group('[getCovidStatistic] Online test ', () {
     test(
       'should return list of [CovidStatistics] in a week when call to remote data is success',
       () async {
@@ -73,25 +44,58 @@ void main() {
         // arrange
         when(remoteDataSource.getCovidStatistics(any))
             .thenAnswer((_) async => tCovidStatisticsModel);
-        when(shortList.shortByDate(any)).thenReturn(expected);
+        when(networkInfo.isConnected).thenAnswer((_) async => true);
         // act
         final result = await repository.getCovidStatisticsOfWeek(daysOfWeek);
         // assert
+        verify(networkInfo.isConnected);
+        verify(remoteDataSource.getCovidStatistics(any));
         expect(true, equals(listEquals(result.toIterable().single, expected)));
       },
     );
 
     test(
-      'should return a [ServerFailure] when a call to remote data throw an [ServerException]',
+      'should cache [CovidStatistics] week data when call to remote data is success',
       () async {
+        final expected = List<CovidStatistics>.filled(
+            daysOfWeek.length, tCovidStatisticsModel);
         // arrange
         when(remoteDataSource.getCovidStatistics(any))
+            .thenAnswer((_) async => tCovidStatisticsModel);
+        when(localDataSource.saveCovidStatistics(expected.first))
+            .thenAnswer((_) async => null);
+        when(networkInfo.isConnected).thenAnswer((_) async => true);
+        // act
+        await repository.getCovidStatisticsOfWeek(daysOfWeek);
+        final result =
+            verify(localDataSource.saveCovidStatistics(any)).callCount;
+        // assert
+        verify(networkInfo.isConnected);
+        verify(remoteDataSource.getCovidStatistics(any));
+        expect(result, daysOfWeek.length);
+      },
+    );
+
+    test(
+      'should get data from cache when there is server failure when a call to remote data throw an [ServerException]',
+      () async {
+        final expected =
+            List<CovidStatistics>.filled(daysOfWeek.length, tCovidStatistics);
+        // arrange
+        when(networkInfo.isConnected).thenAnswer((_) async => true);
+        when(remoteDataSource.getCovidStatistics(any))
             .thenThrow(ServerException());
+        when(localDataSource.getCovidStatistics(any))
+            .thenAnswer((_) async => tCovidStatistics);
         // act
         final result = await repository.getCovidStatisticsOfWeek(daysOfWeek);
         // assert
-        verify(repository.getCovidStatisticsOfWeek(daysOfWeek));
-        expect(result, equals(Left(ServerFailure())));
+        verify(networkInfo.isConnected);
+        verify(remoteDataSource.getCovidStatistics(any));
+        verify(localDataSource.getCovidStatistics(any));
+        expect(
+            result.toIterable().single, TypeMatcher<List<CovidStatistics>>());
+        expect(result.toIterable().single.length, equals(expected.length));
       },
     );
     test(
@@ -100,16 +104,126 @@ void main() {
         // arrange
         final expected = List<CovidStatistics>.filled(
             daysOfWeek.length - 1, tCovidStatistics);
-        when(remoteDataSource.getCovidStatistics(argThat(equals(tCovidDate))))
-            .thenThrow(FormatException());
-        when(remoteDataSource
-                .getCovidStatistics(argThat(isNot(equals(tCovidDate)))))
-            .thenAnswer((realInvocation) async => tCovidStatisticsModel);
-        when(shortList.shortByDate(any)).thenReturn(expected);
+        when(networkInfo.isConnected).thenAnswer((_) async => true);
+        for (String i in daysOfWeek) {
+          if (i == tCovidDate) {
+            when(remoteDataSource.getCovidStatistics(i))
+                .thenThrow(FormatException());
+          } else {
+            when(remoteDataSource.getCovidStatistics(i))
+                .thenAnswer((_) async => tCovidStatistics);
+          }
+        }
+        when(localDataSource.saveCovidStatistics(any))
+            .thenAnswer((_) async => null);
+        // act
+        final result = await repository.getCovidStatisticsOfWeek(daysOfWeek);
+        // assert
+        verify(remoteDataSource.getCovidStatistics(any));
+        verify(localDataSource.saveCovidStatistics(any));
+        expect(result.toIterable().first.length, equals(expected.length));
+      },
+    );
+
+    test(
+      'should skip the data when returning [CacheException] and continue to request when daysOfWeek list is not end',
+      () async {
+        // arrange
+        final expected = List<CovidStatistics>.filled(
+            daysOfWeek.length - 1, tCovidStatistics);
+        when(networkInfo.isConnected).thenAnswer((_) async => true);
+        when(remoteDataSource.getCovidStatistics(any))
+            .thenThrow(ServerException());
+        for (String i in daysOfWeek) {
+          if (i == tCovidDate) {
+            when(localDataSource.getCovidStatistics(i))
+                .thenThrow(CacheException());
+          } else {
+            when(localDataSource.getCovidStatistics(i))
+                .thenAnswer((_) async => tCovidStatistics);
+          }
+        }
         // act
         final result = await repository.getCovidStatisticsOfWeek(daysOfWeek);
         // assert
         expect(result.toIterable().first.length, equals(expected.length));
+      },
+    );
+    test(
+      'should throw a [EmptyFailure] when returning empty data',
+      () async {
+        // arrange
+        when(networkInfo.isConnected).thenAnswer((_) async => true);
+        when(localDataSource.getCovidStatistics(any))
+            .thenThrow(CacheException());
+        when(remoteDataSource.getCovidStatistics(any))
+            .thenThrow(ServerException());
+        // act
+        final result = await repository.getCovidStatisticsOfWeek(daysOfWeek);
+        // assert
+        verify(networkInfo.isConnected);
+        verify(localDataSource.getCovidStatistics(any));
+        verify(remoteDataSource.getCovidStatistics(any));
+        expect(result, Left(EmptyFailure()));
+      },
+    );
+  });
+
+  group('Offline test [getCovidStatisticsOfWeek]', () {
+    test(
+      'should try to cache data when no network connection',
+      () async {
+        final expected =
+            List<CovidStatistics>.filled(daysOfWeek.length, tCovidStatistics);
+
+        // arrange
+        when(networkInfo.isConnected).thenAnswer((_) async => false);
+        when(localDataSource.getCovidStatistics(any))
+            .thenAnswer((_) async => tCovidStatistics);
+        // act
+        final result = await repository.getCovidStatisticsOfWeek(daysOfWeek);
+        // assert
+        verify(networkInfo.isConnected);
+        verify(localDataSource.getCovidStatistics(any));
+        expect(result.toIterable().first, expected);
+      },
+    );
+
+    test(
+      'should skip the data when datasource throw [CacheException]',
+      () async {
+        final expected = List<CovidStatistics>.filled(
+            daysOfWeek.length - 1, tCovidStatistics);
+
+        // arrange
+        when(networkInfo.isConnected).thenAnswer((_) async => false);
+        when(localDataSource.getCovidStatistics(argThat(equals(tCovidDate))))
+            .thenThrow(CacheException());
+        when(localDataSource
+                .getCovidStatistics(argThat(isNot(equals(tCovidDate)))))
+            .thenAnswer((_) async => tCovidStatistics);
+        // act
+        final result = await repository.getCovidStatisticsOfWeek(daysOfWeek);
+        // assert
+        verify(networkInfo.isConnected);
+        verify(localDataSource.getCovidStatistics(any));
+        expect(result.toIterable().single.length, equals(expected.length));
+      },
+    );
+
+    test(
+      'should throw a [EmptyFailure] when no data inside localstorage',
+      () async {
+        // arrange
+        when(networkInfo.isConnected).thenAnswer((_) async => false);
+        when(localDataSource.getCovidStatistics(any))
+            .thenThrow(CacheException());
+        // act
+        final result = await repository.getCovidStatisticsOfWeek(daysOfWeek);
+        // assert
+        verify(networkInfo.isConnected);
+        verify(localDataSource.getCovidStatistics(any));
+        expect(result, Left(EmptyFailure()));
       },
     );
   });

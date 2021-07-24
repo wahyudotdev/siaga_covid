@@ -1,6 +1,7 @@
+import 'package:covid_statistics/features/statistics/data/datasources/covid_statistics_local_datasource.dart';
+
 import '../../../../core/error/exception.dart';
 import '../../../../core/network/network_info.dart';
-import '../../../../core/utils/short_list.dart';
 import '../datasources/covid_statistics_remote_datasource.dart';
 import '../../domain/entities/covid_statistics.dart';
 import '../../../../core/error/failure.dart';
@@ -9,38 +10,58 @@ import 'package:dartz/dartz.dart';
 
 class CovidStatisticsRepositoryImpl implements CovidStatisticsRepository {
   final CovidStatisticsRemoteDataSource remoteDataSource;
+  final CovidStatisticsLocalDataSource localDataSource;
   final NetworkInfo networkInfo;
-  final ShortList shortList;
   CovidStatisticsRepositoryImpl({
     required this.remoteDataSource,
+    required this.localDataSource,
     required this.networkInfo,
-    required this.shortList,
   });
-  @override
-  Future<Either<Failure, CovidStatistics>> getCovidStatistics(
-      String date) async {
-    try {
-      final result = await remoteDataSource.getCovidStatistics(date);
-      return Right(result);
-    } on ServerException {
-      return Left(ServerFailure());
+
+  Either<Failure, List<CovidStatistics>> _dataOrEmpty(
+      List<CovidStatistics> list) {
+    list.sort(
+        (a, b) => a.items.first.lastUpdate.compareTo(b.items.first.lastUpdate));
+    if (list.isNotEmpty) {
+      return Right(list);
+    } else {
+      return Left(EmptyFailure());
     }
   }
 
   @override
   Future<Either<Failure, List<CovidStatistics>>> getCovidStatisticsOfWeek(
       List<String> date) async {
-    try {
-      List<CovidStatistics> list = [];
+    List<CovidStatistics> list = [];
+    if (await networkInfo.isConnected) {
       for (var element in date) {
         try {
           final result = await remoteDataSource.getCovidStatistics(element);
           list.add(result);
-        } on FormatException {}
+          await localDataSource.saveCovidStatistics(result);
+        } on ServerException {
+          try {
+            final result = await localDataSource.getCovidStatistics(element);
+            list.add(result);
+            await localDataSource.saveCovidStatistics(result);
+          } on CacheException {
+            print('CacheException');
+          }
+        } on FormatException {
+          print('FormatException');
+        }
       }
-      return Right(shortList.shortByDate(list));
-    } on ServerException {
-      return Left(ServerFailure());
+      return _dataOrEmpty(list);
+    } else {
+      for (var element in date) {
+        try {
+          final result = await localDataSource.getCovidStatistics(element);
+          list.add(result);
+        } on CacheException {
+          print('CacheException');
+        }
+      }
+      return _dataOrEmpty(list);
     }
   }
 }

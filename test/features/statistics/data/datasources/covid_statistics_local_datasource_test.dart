@@ -1,3 +1,4 @@
+import 'package:covid_statistics/core/error/exception.dart';
 import 'package:covid_statistics/core/local_storage/local_storage.dart';
 import 'package:covid_statistics/features/statistics/data/datasources/covid_statistics_local_datasource.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -32,6 +33,17 @@ void main() {
     },
   );
 
+  test(
+    'should throw a [CacheException] when there is error or no data when get data from local storage',
+    () async {
+      // arrange
+      when(storage.getData(key: tCovidDate)).thenThrow(Exception());
+      // act
+      final call = dataSource.getCovidStatistics;
+      // assert
+      expect(() => call(tCovidDate), throwsA(TypeMatcher<CacheException>()));
+    },
+  );
   test(
     'should call the method to cache the covid statistics in local database',
     () async {

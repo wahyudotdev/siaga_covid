@@ -4,8 +4,9 @@
 
 import 'dart:async' as _i4;
 
-import 'package:covid_statistics/core/network/network_info.dart' as _i5;
-import 'package:covid_statistics/core/utils/short_list.dart' as _i6;
+import 'package:covid_statistics/core/network/network_info.dart' as _i6;
+import 'package:covid_statistics/features/statistics/data/datasources/covid_statistics_local_datasource.dart'
+    as _i5;
 import 'package:covid_statistics/features/statistics/data/datasources/covid_statistics_remote_datasource.dart'
     as _i3;
 import 'package:covid_statistics/features/statistics/domain/entities/covid_statistics.dart'
@@ -38,10 +39,33 @@ class MockCovidStatisticsRemoteDataSource extends _i1.Mock
           as _i4.Future<_i2.CovidStatistics>);
 }
 
+/// A class which mocks [CovidStatisticsLocalDataSource].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCovidStatisticsLocalDataSource extends _i1.Mock
+    implements _i5.CovidStatisticsLocalDataSource {
+  MockCovidStatisticsLocalDataSource() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.Future<_i2.CovidStatistics> getCovidStatistics(String? date) =>
+      (super.noSuchMethod(Invocation.method(#getCovidStatistics, [date]),
+              returnValue:
+                  Future<_i2.CovidStatistics>.value(_FakeCovidStatistics()))
+          as _i4.Future<_i2.CovidStatistics>);
+  @override
+  _i4.Future<void> saveCovidStatistics(_i2.CovidStatistics? covidStatistics) =>
+      (super.noSuchMethod(
+          Invocation.method(#saveCovidStatistics, [covidStatistics]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
+}
+
 /// A class which mocks [NetworkInfo].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockNetworkInfo extends _i1.Mock implements _i5.NetworkInfo {
+class MockNetworkInfo extends _i1.Mock implements _i6.NetworkInfo {
   MockNetworkInfo() {
     _i1.throwOnMissingStub(this);
   }
@@ -50,18 +74,4 @@ class MockNetworkInfo extends _i1.Mock implements _i5.NetworkInfo {
   _i4.Future<bool> get isConnected =>
       (super.noSuchMethod(Invocation.getter(#isConnected),
           returnValue: Future<bool>.value(false)) as _i4.Future<bool>);
-}
-
-/// A class which mocks [ShortList].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockShortList extends _i1.Mock implements _i6.ShortList {
-  MockShortList() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  List<_i2.CovidStatistics> shortByDate(List<_i2.CovidStatistics>? list) =>
-      (super.noSuchMethod(Invocation.method(#shortByDate, [list]),
-          returnValue: <_i2.CovidStatistics>[]) as List<_i2.CovidStatistics>);
 }

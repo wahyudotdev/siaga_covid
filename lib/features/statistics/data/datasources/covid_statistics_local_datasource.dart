@@ -1,9 +1,11 @@
+import 'package:covid_statistics/core/error/exception.dart';
 import 'package:covid_statistics/core/local_storage/local_storage.dart';
 import 'package:covid_statistics/features/statistics/data/models/covid_statistics_model.dart';
 import 'package:covid_statistics/features/statistics/domain/entities/covid_statistics.dart';
 import 'package:intl/intl.dart';
 
 abstract class CovidStatisticsLocalDataSource {
+  /// Throw [CacheException] when there is no data
   Future<CovidStatistics> getCovidStatistics(String date);
   Future<void> saveCovidStatistics(CovidStatistics covidStatistics);
 }
@@ -16,8 +18,12 @@ class CovidStatisticsLocalDataSourceImpl
 
   @override
   Future<CovidStatistics> getCovidStatistics(String date) async {
-    final jsonString = await localStorage.getData(key: date);
-    return CovidStatisticsModel.fromJsonString(jsonString);
+    try {
+      final jsonString = await localStorage.getData(key: date);
+      return CovidStatisticsModel.fromJsonString(jsonString);
+    } catch (e) {
+      throw CacheException();
+    }
   }
 
   @override
