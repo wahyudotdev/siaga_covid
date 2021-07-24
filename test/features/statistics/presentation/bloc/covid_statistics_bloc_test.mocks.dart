@@ -6,13 +6,21 @@ import 'dart:async' as _i5;
 
 import 'package:covid_statistics/core/error/failure.dart' as _i6;
 import 'package:covid_statistics/core/query_helper/date_param_helper.dart'
-    as _i8;
+    as _i9;
 import 'package:covid_statistics/features/statistics/domain/entities/covid_statistics.dart'
     as _i7;
+import 'package:covid_statistics/features/statistics/domain/entities/covid_summary.dart'
+    as _i10;
 import 'package:covid_statistics/features/statistics/domain/repositories/covid_statistics_repository.dart'
     as _i2;
+import 'package:covid_statistics/features/statistics/domain/usecases/date_params.dart'
+    as _i8;
 import 'package:covid_statistics/features/statistics/domain/usecases/get_covid_statistics_of_week.dart'
     as _i4;
+import 'package:covid_statistics/features/statistics/domain/usecases/get_covid_summary_country.dart'
+    as _i12;
+import 'package:covid_statistics/features/statistics/domain/usecases/get_covid_summary_world.dart'
+    as _i11;
 import 'package:dartz/dartz.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -47,7 +55,7 @@ class MockGetCovidStatisticsOfWeek extends _i1.Mock
           as _i2.CovidStatisticsRepository);
   @override
   _i5.Future<_i3.Either<_i6.Failure, List<_i7.CovidStatistics>>> call(
-          _i4.DateParams? params) =>
+          _i8.DateParams? params) =>
       (super.noSuchMethod(Invocation.method(#call, [params]),
           returnValue:
               Future<_i3.Either<_i6.Failure, List<_i7.CovidStatistics>>>.value(
@@ -58,7 +66,7 @@ class MockGetCovidStatisticsOfWeek extends _i1.Mock
 /// A class which mocks [GetDateParam].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGetDateParam extends _i1.Mock implements _i8.GetDateParam {
+class MockGetDateParam extends _i1.Mock implements _i9.GetDateParam {
   MockGetDateParam() {
     _i1.throwOnMissingStub(this);
   }
@@ -75,10 +83,73 @@ class MockCovidStatisticsRepository extends _i1.Mock
 
   @override
   _i5.Future<_i3.Either<_i6.Failure, List<_i7.CovidStatistics>>>
-      getCovidStatisticsOfWeek(List<String>? date) => (super.noSuchMethod(
-          Invocation.method(#getCovidStatisticsOfWeek, [date]),
+      getCovidStatisticsOfWeek(List<String>? daysOfWeek) => (super.noSuchMethod(
+          Invocation.method(#getCovidStatisticsOfWeek, [daysOfWeek]),
           returnValue:
               Future<_i3.Either<_i6.Failure, List<_i7.CovidStatistics>>>.value(
                   _FakeEither<_i6.Failure, List<_i7.CovidStatistics>>())) as _i5
           .Future<_i3.Either<_i6.Failure, List<_i7.CovidStatistics>>>);
+  @override
+  _i5.Future<_i3.Either<_i6.Failure, _i10.CovidSummary>> getCovidSummary(
+          {List<String>? daysOfWeek}) =>
+      (super.noSuchMethod(
+          Invocation.method(#getCovidSummary, [], {#daysOfWeek: daysOfWeek}),
+          returnValue: Future<_i3.Either<_i6.Failure, _i10.CovidSummary>>.value(
+              _FakeEither<_i6.Failure, _i10.CovidSummary>())) as _i5
+          .Future<_i3.Either<_i6.Failure, _i10.CovidSummary>>);
+  @override
+  _i5.Future<_i3.Either<_i6.Failure, _i10.CovidSummary>> getCovidSummaryCountry(
+          {List<String>? daysOfWeek}) =>
+      (super.noSuchMethod(
+          Invocation.method(
+              #getCovidSummaryCountry, [], {#daysOfWeek: daysOfWeek}),
+          returnValue: Future<_i3.Either<_i6.Failure, _i10.CovidSummary>>.value(
+              _FakeEither<_i6.Failure, _i10.CovidSummary>())) as _i5
+          .Future<_i3.Either<_i6.Failure, _i10.CovidSummary>>);
+}
+
+/// A class which mocks [GetCovidSummaryWorld].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGetCovidSummaryWorld extends _i1.Mock
+    implements _i11.GetCovidSummaryWorld {
+  MockGetCovidSummaryWorld() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.CovidStatisticsRepository get repository =>
+      (super.noSuchMethod(Invocation.getter(#repository),
+              returnValue: _FakeCovidStatisticsRepository())
+          as _i2.CovidStatisticsRepository);
+  @override
+  _i5.Future<_i3.Either<_i6.Failure, _i10.CovidSummary>> call(
+          _i8.DateParams? params) =>
+      (super.noSuchMethod(Invocation.method(#call, [params]),
+          returnValue: Future<_i3.Either<_i6.Failure, _i10.CovidSummary>>.value(
+              _FakeEither<_i6.Failure, _i10.CovidSummary>())) as _i5
+          .Future<_i3.Either<_i6.Failure, _i10.CovidSummary>>);
+}
+
+/// A class which mocks [GetCovidSummaryCountry].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGetCovidSummaryCountry extends _i1.Mock
+    implements _i12.GetCovidSummaryCountry {
+  MockGetCovidSummaryCountry() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.CovidStatisticsRepository get repository =>
+      (super.noSuchMethod(Invocation.getter(#repository),
+              returnValue: _FakeCovidStatisticsRepository())
+          as _i2.CovidStatisticsRepository);
+  @override
+  _i5.Future<_i3.Either<_i6.Failure, _i10.CovidSummary>> call(
+          _i8.DateParams? params) =>
+      (super.noSuchMethod(Invocation.method(#call, [params]),
+          returnValue: Future<_i3.Either<_i6.Failure, _i10.CovidSummary>>.value(
+              _FakeEither<_i6.Failure, _i10.CovidSummary>())) as _i5
+          .Future<_i3.Either<_i6.Failure, _i10.CovidSummary>>);
 }

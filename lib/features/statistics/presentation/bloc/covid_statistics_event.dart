@@ -6,3 +6,7 @@ abstract class CovidStatisticsEvent extends Equatable {
 }
 
 class CovidStatisticsOfWeekEvent extends CovidStatisticsEvent {}
+
+class SummaryWorldEvent extends CovidStatisticsEvent {}
+
+class SummaryCountryEvent extends CovidStatisticsEvent {}

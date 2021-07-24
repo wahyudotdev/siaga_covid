@@ -1,5 +1,7 @@
 import 'package:covid_statistics/core/local_storage/local_storage.dart';
 import 'package:covid_statistics/features/statistics/data/datasources/covid_statistics_local_datasource.dart';
+import 'package:covid_statistics/features/statistics/domain/usecases/get_covid_summary_country.dart';
+import 'package:covid_statistics/features/statistics/domain/usecases/get_covid_summary_world.dart';
 
 import 'core/network/network_info.dart';
 import 'core/query_helper/date_param_helper.dart';
@@ -34,13 +36,16 @@ void init() {
           ));
 
   /// Usecase
-  sl.registerLazySingleton<GetCovidStatisticsOfWeek>(
-      () => GetCovidStatisticsOfWeek(sl()));
+  sl.registerLazySingleton(() => GetCovidStatisticsOfWeek(sl()));
+  sl.registerLazySingleton(() => GetCovidSummaryWorld(sl()));
+  sl.registerLazySingleton(() => GetCovidSummaryCountry(sl()));
 
   /// BloC
   sl.registerFactory(() => CovidStatisticsBloc(
         covidStatisticsOfWeek: sl(),
         getDateParam: sl(),
+        summaryWorld: sl(),
+        summaryCountry: sl(),
       ));
 
   /// External

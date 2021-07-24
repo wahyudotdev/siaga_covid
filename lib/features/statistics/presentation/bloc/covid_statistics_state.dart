@@ -9,7 +9,7 @@ abstract class CovidStatisticsState extends Equatable {
 
 class Empty extends CovidStatisticsState {}
 
-class LoadingStatistics extends CovidStatisticsState {}
+class Loading extends CovidStatisticsState {}
 
 class LoadedStatistics extends CovidStatisticsState {
   final List<CovidStatistics> data;
