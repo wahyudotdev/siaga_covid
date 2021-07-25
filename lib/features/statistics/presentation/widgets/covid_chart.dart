@@ -1,11 +1,10 @@
-import 'package:charts_flutter/flutter.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import '../../../../utils/app_colors.dart';
+import 'package:covid_statistics/core/utils/app_colors.dart';
+import 'package:covid_statistics/features/statistics/domain/entities/covid_series.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/entities/covid_series.dart';
-import '../../../../utils/number_format.dart';
+import '../../../../core/utils/number_format.dart';
 
 class CovidChart extends StatelessWidget {
   final List<CovidSeries>? data;
@@ -13,7 +12,7 @@ class CovidChart extends StatelessWidget {
   const CovidChart({Key? key, this.data}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    List<charts.Series<CovidSeries, String?>> series = [
+    List<charts.Series<CovidSeries, String>> series = [
       charts.Series(
         id: 'covid series',
         data: data!,
@@ -25,7 +24,7 @@ class CovidChart extends StatelessWidget {
     final simpleFormatter =
         charts.BasicNumericTickFormatterSpec.fromNumberFormat(numberFormat());
     return charts.BarChart(
-      series as List<Series<dynamic, String>>,
+      series,
       barGroupingType: charts.BarGroupingType.grouped,
       defaultRenderer: charts.BarRendererConfig(
         cornerStrategy: charts.ConstCornerStrategy(30),

@@ -17,10 +17,6 @@ import 'package:covid_statistics/features/statistics/domain/usecases/date_params
     as _i8;
 import 'package:covid_statistics/features/statistics/domain/usecases/get_covid_statistics_of_week.dart'
     as _i4;
-import 'package:covid_statistics/features/statistics/domain/usecases/get_covid_summary_country.dart'
-    as _i12;
-import 'package:covid_statistics/features/statistics/domain/usecases/get_covid_summary_world.dart'
-    as _i11;
 import 'package:dartz/dartz.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -103,52 +99,6 @@ class MockCovidStatisticsRepository extends _i1.Mock
       (super.noSuchMethod(
           Invocation.method(
               #getCovidSummaryCountry, [], {#daysOfWeek: daysOfWeek}),
-          returnValue: Future<_i3.Either<_i6.Failure, _i10.CovidSummary>>.value(
-              _FakeEither<_i6.Failure, _i10.CovidSummary>())) as _i5
-          .Future<_i3.Either<_i6.Failure, _i10.CovidSummary>>);
-}
-
-/// A class which mocks [GetCovidSummaryWorld].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockGetCovidSummaryWorld extends _i1.Mock
-    implements _i11.GetCovidSummaryWorld {
-  MockGetCovidSummaryWorld() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  _i2.CovidStatisticsRepository get repository =>
-      (super.noSuchMethod(Invocation.getter(#repository),
-              returnValue: _FakeCovidStatisticsRepository())
-          as _i2.CovidStatisticsRepository);
-  @override
-  _i5.Future<_i3.Either<_i6.Failure, _i10.CovidSummary>> call(
-          _i8.DateParams? params) =>
-      (super.noSuchMethod(Invocation.method(#call, [params]),
-          returnValue: Future<_i3.Either<_i6.Failure, _i10.CovidSummary>>.value(
-              _FakeEither<_i6.Failure, _i10.CovidSummary>())) as _i5
-          .Future<_i3.Either<_i6.Failure, _i10.CovidSummary>>);
-}
-
-/// A class which mocks [GetCovidSummaryCountry].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockGetCovidSummaryCountry extends _i1.Mock
-    implements _i12.GetCovidSummaryCountry {
-  MockGetCovidSummaryCountry() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  _i2.CovidStatisticsRepository get repository =>
-      (super.noSuchMethod(Invocation.getter(#repository),
-              returnValue: _FakeCovidStatisticsRepository())
-          as _i2.CovidStatisticsRepository);
-  @override
-  _i5.Future<_i3.Either<_i6.Failure, _i10.CovidSummary>> call(
-          _i8.DateParams? params) =>
-      (super.noSuchMethod(Invocation.method(#call, [params]),
           returnValue: Future<_i3.Either<_i6.Failure, _i10.CovidSummary>>.value(
               _FakeEither<_i6.Failure, _i10.CovidSummary>())) as _i5
           .Future<_i3.Either<_i6.Failure, _i10.CovidSummary>>);

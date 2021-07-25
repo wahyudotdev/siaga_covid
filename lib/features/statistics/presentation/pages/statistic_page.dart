@@ -1,114 +1,16 @@
+import 'package:covid_statistics/core/utils/app_colors.dart';
+import 'package:covid_statistics/core/utils/constant.dart';
+import 'package:covid_statistics/core/utils/view.dart';
+import 'package:covid_statistics/features/statistics/presentation/widgets/covid_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/covid_statistics_bloc.dart';
-import '../widgets/covid_chart.dart';
-import '../../domain/entities/covid_series.dart';
 import '../../../../injection_container.dart';
-import '../../../../data/covid_daily_statistics.dart';
-import '../../../../repository/api_global.dart';
-import '../../../../utils/app_colors.dart';
-import '../../../../utils/view.dart';
-import '../../../../utils/constant.dart';
 
-class StatisticPage extends StatefulWidget {
-  @override
-  _StatisticPageState createState() => _StatisticPageState();
-}
-
-class _StatisticPageState extends State<StatisticPage> {
+class StatisticPage extends StatelessWidget {
   final bloc = sl<CovidStatisticsBloc>();
-  List<List<CovidDailyStatistics>> covidStatistics = [];
-  CovidDailyStatistics realtimeData = CovidDailyStatistics();
-  List<CovidSeries> data = [];
-
-  void getDaysOfWeek() {
-    List<String> days = [];
-    for (int i = 1; i < 8; i++) {
-      var d = DateTime.now().subtract(Duration(days: i));
-      days.add('${d.month}-${d.day}-${d.year}');
-    }
-    var task = days.map((e) => ApiGlobal(e));
-    task.forEach((element) async {
-      try {
-        var result = await element.getGlobalStatistics();
-        setState(() {
-          covidStatistics.add(result);
-          realtimeData = result
-              .firstWhere((element) => element.countryRegion == 'Indonesia');
-          data.add(CovidSeries(
-            date: realtimeData.lastUpdate!.day.toString(),
-            confirmed: realtimeData.confirmed,
-            color: charts.ColorUtil.fromDartColor(lightblue),
-          ));
-        });
-      } catch (e) {
-        print(e);
-      }
-    });
-  }
-
-  void countLocalStatistics() {
-    List<CovidSeries> d = [];
-    covidStatistics.forEach((element) {
-      var result =
-          element.firstWhere((element) => element.countryRegion == 'Indonesia');
-      d.add(CovidSeries(
-        date: result.lastUpdate!.day.toString(),
-        confirmed: result.confirmed,
-        color: charts.ColorUtil.fromDartColor(lightblue),
-      ));
-    });
-
-    setState(() {
-      realtimeData = covidStatistics.first
-          .firstWhere((element) => element.countryRegion == 'Indonesia');
-      data = d;
-    });
-  }
-
-  void countWorldStatistics() {
-    int confirmed = 0;
-    int recovered = 0;
-    int death = 0;
-    int active = 0;
-
-    covidStatistics.first.forEach((element) {
-      confirmed += element.confirmed;
-      recovered += element.recovered;
-      death += element.deaths;
-      active += element.active;
-    });
-
-    List<CovidSeries> d = [];
-    covidStatistics.forEach((element) {
-      int _confirmed = 0;
-      element.forEach((element) => _confirmed += element.confirmed);
-      d.add(CovidSeries(
-        date: element.first.lastUpdate!.day.toString(),
-        confirmed: _confirmed,
-        color: charts.ColorUtil.fromDartColor(lightblue),
-      ));
-    });
-
-    setState(() {
-      realtimeData = CovidDailyStatistics(
-          confirmed: confirmed,
-          recovered: recovered,
-          deaths: death,
-          active: active);
-      data = d;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // getDaysOfWeek();
-  }
-
   Widget _title() {
     return SliverToBoxAdapter(
       child: Container(
@@ -147,7 +49,12 @@ class _StatisticPageState extends State<StatisticPage> {
               Text('Indonesia'),
               Text('Global'),
             ],
-            onTap: null,
+            onTap: (tab) {
+              if (tab == 0) {
+                bloc.add(SummaryCountryEvent());
+              } else
+                bloc.add(SummaryWorldEvent());
+            },
           ),
         ),
       ),
@@ -192,58 +99,84 @@ class _StatisticPageState extends State<StatisticPage> {
     );
   }
 
+  Widget _showStatistics(
+      {required bool isLoading,
+      required String confirmed,
+      required String active,
+      required String deaths,
+      required String recovered}) {
+    return Container(
+      width: View.x * 100,
+      height: View.y * 35,
+      padding: EdgeInsets.all(View.x * 7),
+      child: GridView.count(
+        crossAxisCount: 2,
+        childAspectRatio: 2 / 1,
+        crossAxisSpacing: 5,
+        mainAxisSpacing: 5,
+        children: [
+          _singleStatsBox(
+            color: orange,
+            hint: 'Total',
+            count: confirmed,
+            isLoading: isLoading,
+          ),
+          _singleStatsBox(
+            color: red2,
+            hint: 'Meninggal',
+            count: deaths,
+            isLoading: isLoading,
+          ),
+          _singleStatsBox(
+            color: lightblue2,
+            hint: 'Aktif',
+            count: active,
+            isLoading: isLoading,
+          ),
+          _singleStatsBox(
+            color: green,
+            hint: 'Sembuh',
+            count: recovered,
+            isLoading: isLoading,
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _statisticGrid() {
     return SliverToBoxAdapter(
       child: BlocBuilder<CovidStatisticsBloc, CovidStatisticsState>(
         builder: (context, state) {
-          print(state.runtimeType);
           if (state is Empty) bloc.add(CovidStatisticsOfWeekEvent());
+          if (state is LoadedStatistics) {
+            bloc.add(SummaryWorldEvent());
+            bloc.add(SummaryCountryEvent());
+          }
           if (state is LoadedSummaryByCountry) {
-            return Container(
-              width: View.x * 100,
-              height: View.y * 35,
-              padding: EdgeInsets.all(View.x * 7),
-              child: GridView.count(
-                crossAxisCount: 2,
-                childAspectRatio: 2 / 1,
-                crossAxisSpacing: 5,
-                mainAxisSpacing: 5,
-                children: [
-                  _singleStatsBox(
-                    color: orange,
-                    hint: 'Total',
-                    count: state.data.confirmed,
-                    isLoading: false,
-                  ),
-                  _singleStatsBox(
-                    color: red2,
-                    hint: 'Meninggal',
-                    count: state.data.deaths,
-                    isLoading: false,
-                  ),
-                  _singleStatsBox(
-                    color: lightblue2,
-                    hint: 'Aktif',
-                    count: state.data.active,
-                    isLoading: false,
-                  ),
-                  _singleStatsBox(
-                    color: green,
-                    hint: 'Sembuh',
-                    count: state.data.recovered,
-                    isLoading: false,
-                  ),
-                ],
-              ),
+            return _showStatistics(
+              isLoading: false,
+              confirmed: state.data.confirmed,
+              active: state.data.active,
+              deaths: state.data.deaths,
+              recovered: state.data.recovered,
             );
           }
-          return Container(
-            width: View.x * 100,
-            height: View.y * 35,
-            padding: EdgeInsets.all(View.x * 7),
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
+          if (state is LoadedSummaryWorld) {
+            return _showStatistics(
+              isLoading: false,
+              confirmed: state.data.confirmed,
+              active: state.data.active,
+              deaths: state.data.deaths,
+              recovered: state.data.recovered,
+            );
+          }
+          return _showStatistics(
+            isLoading: true,
+            confirmed: '0',
+            active: '0',
+            deaths: '0',
+            recovered: '0',
           );
         },
       ),
@@ -282,19 +215,36 @@ class _StatisticPageState extends State<StatisticPage> {
             ),
             Flexible(
               flex: 5,
-              child: data.length == 0
-                  ? Center(
-                      child: Text(
-                        'Kosong',
-                        style: TextStyle(fontSize: View.x * 5),
-                      ),
-                    )
-                  : CovidChart(
-                      data: data.reversed.toList(),
-                    ),
+              child: BlocBuilder<CovidStatisticsBloc, CovidStatisticsState>(
+                builder: (context, state) {
+                  return Center(
+                    child: bloc.covidSeries.length == 0
+                        ? CircularProgressIndicator()
+                        : CovidChart(
+                            data: bloc.covidSeries,
+                          ),
+                  );
+                },
+              ),
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _snackBar() {
+    return SliverToBoxAdapter(
+      child: BlocBuilder<CovidStatisticsBloc, CovidStatisticsState>(
+        builder: (context, state) {
+          final snackBar = SnackBar(content: Text('Gagal memuat data'));
+          if (state is Error) {
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            Future.delayed(Duration(seconds: 5),
+                () => bloc.add(CovidStatisticsOfWeekEvent()));
+          }
+          return Container();
+        },
       ),
     );
   }
@@ -311,6 +261,7 @@ class _StatisticPageState extends State<StatisticPage> {
             _regionTabBar(),
             _statisticGrid(),
             _statisticChart(),
+            _snackBar(),
           ],
         ),
       ),

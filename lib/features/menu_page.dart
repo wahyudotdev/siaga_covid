@@ -1,8 +1,9 @@
+import 'package:covid_statistics/core/utils/app_colors.dart';
+import 'package:covid_statistics/core/utils/view.dart';
+
 import 'home/presentation/pages/home_page.dart';
 import 'news/presentation/pages/news_page.dart';
 import 'statistics/presentation/pages/statistic_page.dart';
-import '../utils/app_colors.dart';
-import '../utils/view.dart';
 import 'package:flutter/material.dart';
 
 class MenuPage extends StatefulWidget {

@@ -1,11 +1,9 @@
 import 'dart:convert';
 
-import 'package:equatable/equatable.dart';
-
 import '../../domain/entities/covid_statistics.dart';
 import 'package:intl/intl.dart';
 
-class CovidStatisticsModel extends CovidStatistics implements Equatable {
+class CovidStatisticsModel extends CovidStatistics {
   CovidStatisticsModel(List<CovidStatisticItem> items) : super(items);
 
   factory CovidStatisticsModel.fromJsonString(String jsonString) {

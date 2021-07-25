@@ -1,12 +1,13 @@
+import 'package:covid_statistics/core/local_storage/local_storage.dart';
 import 'injection_container.dart' as di;
 import 'package:flutter/material.dart';
-
 import 'features/menu_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   di.init();
   await di.sl.allReady();
+  await di.sl<LocalStorage>().init();
   runApp(MyApp());
 }
 

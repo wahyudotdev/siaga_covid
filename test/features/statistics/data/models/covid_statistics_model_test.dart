@@ -2,13 +2,11 @@ import 'dart:convert';
 
 import 'package:covid_statistics/features/statistics/data/models/covid_statistics_model.dart';
 import 'package:covid_statistics/features/statistics/domain/entities/covid_statistics.dart';
-import 'package:covid_statistics/features/statistics/domain/entities/covid_summary.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../fixtures/fixture_reader.dart';
 import '../../dummy/covid_statistics_dummy.dart';
 
-void sum(CovidSummary summary) {}
 void main() {
   test(
     'should be a subclass of CovidStatistics entities',

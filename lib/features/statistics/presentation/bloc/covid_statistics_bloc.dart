@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:covid_statistics/features/statistics/data/models/covid_series_model.dart';
+import 'package:covid_statistics/features/statistics/data/models/covid_summary_model.dart';
+import 'package:covid_statistics/features/statistics/domain/entities/covid_series.dart';
+import 'package:covid_statistics/features/statistics/domain/entities/covid_statistics.dart';
 import 'package:covid_statistics/features/statistics/domain/usecases/date_params.dart';
-import 'package:covid_statistics/features/statistics/domain/usecases/get_covid_summary_country.dart';
-import 'package:covid_statistics/features/statistics/domain/usecases/get_covid_summary_world.dart';
 import '../../../../core/query_helper/date_param_helper.dart';
-import '../../domain/entities/covid_statistics.dart';
 import '../../domain/entities/covid_summary.dart';
 import '../../domain/usecases/get_covid_statistics_of_week.dart';
 import 'package:equatable/equatable.dart';
@@ -16,17 +17,15 @@ class CovidStatisticsBloc
     extends Bloc<CovidStatisticsEvent, CovidStatisticsState> {
   final GetCovidStatisticsOfWeek covidStatisticsOfWeek;
   final GetDateParam getDateParam;
-  final GetCovidSummaryWorld summaryWorld;
-  final GetCovidSummaryCountry summaryCountry;
 
   CovidStatisticsBloc({
     required this.covidStatisticsOfWeek,
     required this.getDateParam,
-    required this.summaryWorld,
-    required this.summaryCountry,
   }) : super(Empty());
 
   CovidStatisticsState get initialState => Empty();
+  List<CovidSeries> covidSeries = [];
+  List<CovidStatistics> covidStatistics = [];
 
   @override
   Stream<CovidStatisticsState> mapEventToState(
@@ -40,30 +39,24 @@ class CovidStatisticsBloc
       yield* result.fold((failure) async* {
         yield Error();
       }, (data) async* {
-        yield LoadedStatistics(data: data);
+        covidStatistics = data;
+        covidSeries =
+            data.map((e) => CovidSeriesModel.fromStatistics(e)).toList();
+        yield LoadedStatistics();
       });
     }
 
     if (event is SummaryWorldEvent) {
       yield Loading();
-      final daysOfWeek = getDateParam.daysOfWeek();
-      final result = await summaryWorld(DateParams(daysOfWeek: daysOfWeek));
-      yield* result.fold((failure) async* {
-        yield Error();
-      }, (data) async* {
-        yield LoadedSummaryWorld(data: data);
-      });
+      yield LoadedSummaryWorld(
+          data: CovidSummaryModel.fromStatistics(statistics: covidStatistics));
     }
 
     if (event is SummaryCountryEvent) {
       yield Loading();
-      final daysOfWeek = getDateParam.daysOfWeek();
-      final result = await summaryCountry(DateParams(daysOfWeek: daysOfWeek));
-      yield* result.fold((failure) async* {
-        yield Error();
-      }, (data) async* {
-        yield LoadedSummaryByCountry(data: data);
-      });
+      yield LoadedSummaryByCountry(
+          data: CovidSummaryModel.fromStatistics(
+              statistics: covidStatistics, country: 'Indonesia'));
     }
   }
 }

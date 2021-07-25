@@ -1,5 +1,5 @@
-import '../../../../utils/app_colors.dart';
-import '../../../../utils/view.dart';
+import 'package:covid_statistics/core/utils/app_colors.dart';
+import 'package:covid_statistics/core/utils/view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:share_plus/share_plus.dart';

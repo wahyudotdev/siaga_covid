@@ -1,5 +1,6 @@
 import '../../domain/entities/covid_statistics.dart';
 import '../../domain/entities/covid_summary.dart';
+import 'package:intl/intl.dart';
 
 class CovidSummaryModel extends CovidSummary {
   final String confirmed;
@@ -39,10 +40,14 @@ class CovidSummaryModel extends CovidSummary {
       recovered += byCountry.recovered;
     }
     return CovidSummaryModel(
-      confirmed: confirmed.toString(),
-      active: active.toString(),
-      deaths: deaths.toString(),
-      recovered: recovered.toString(),
+      confirmed: numberFormat().format(confirmed),
+      active: numberFormat().format(active),
+      deaths: numberFormat().format(deaths),
+      recovered: numberFormat().format(recovered),
     );
+  }
+  static NumberFormat numberFormat() {
+    return NumberFormat.compactCurrency(
+        decimalDigits: 2, symbol: '', locale: 'ID');
   }
 }

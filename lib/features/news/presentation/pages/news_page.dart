@@ -1,8 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:covid_statistics/core/utils/app_colors.dart';
+import 'package:covid_statistics/core/utils/view.dart';
 import '../../../../repository/rss_news.dart';
 import 'detail_news_page.dart';
-import '../../../../utils/app_colors.dart';
-import '../../../../utils/view.dart';
 import 'package:flutter/material.dart';
 import 'package:webfeed/domain/rss_feed.dart';
 import 'package:webfeed/domain/rss_item.dart';
@@ -103,6 +103,7 @@ class _NewsPageState extends State<NewsPage> {
     );
   }
 
+  // ignore: unused_element
   Widget _carouselNews() {
     return rssFeed.items!.length == 0
         ? SliverToBoxAdapter(
@@ -131,6 +132,7 @@ class _NewsPageState extends State<NewsPage> {
           );
   }
 
+  // ignore: unused_element
   Widget _recomendation() {
     return SliverToBoxAdapter(
       child: Container(
@@ -253,6 +255,7 @@ class _NewsPageState extends State<NewsPage> {
     );
   }
 
+  // ignore: unused_element
   Widget _newsList() {
     return rssFeed.items!.length == 0
         ? SliverToBoxAdapter(
@@ -280,9 +283,9 @@ class _NewsPageState extends State<NewsPage> {
       child: CustomScrollView(
         slivers: [
           _title(),
-          _carouselNews(),
-          _recomendation(),
-          _newsList(),
+          // _carouselNews(),
+          // _recomendation(),
+          // _newsList(),
         ],
       ),
     );

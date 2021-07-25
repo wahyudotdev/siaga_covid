@@ -23,7 +23,7 @@ class MockLocalStorage extends _i1.Mock implements _i2.LocalStorage {
   }
 
   @override
-  _i3.Future<void> call() => (super.noSuchMethod(Invocation.method(#call, []),
+  _i3.Future<void> init() => (super.noSuchMethod(Invocation.method(#init, []),
       returnValue: Future<void>.value(),
       returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
   @override

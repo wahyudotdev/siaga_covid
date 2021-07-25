@@ -11,11 +11,7 @@ class Empty extends CovidStatisticsState {}
 
 class Loading extends CovidStatisticsState {}
 
-class LoadedStatistics extends CovidStatisticsState {
-  final List<CovidStatistics> data;
-
-  LoadedStatistics({required this.data});
-}
+class LoadedStatistics extends CovidStatisticsState {}
 
 class LoadedSummaryWorld extends CovidStatisticsState {
   final CovidSummary data;

@@ -74,16 +74,21 @@ class CovidStatisticsRepositoryImpl implements CovidStatisticsRepository {
       {required List<String> daysOfWeek}) async {
     List<CovidStatistics> list = [];
     for (String day in daysOfWeek) {
-      final result = await localDataSource.getCovidStatistics(day);
-      list.add(result);
+      try {
+        final result = await localDataSource.getCovidStatistics(day);
+        list.add(result);
+      } catch (e) {
+        print(e);
+      }
     }
     final summary = CovidSummaryModel.fromStatistics(statistics: list);
     return Right(
       CovidSummary(
-          confirmed: summary.confirmed,
-          active: summary.active,
-          deaths: summary.deaths,
-          recovered: summary.recovered),
+        confirmed: summary.confirmed,
+        active: summary.active,
+        deaths: summary.deaths,
+        recovered: summary.recovered,
+      ),
     );
   }
 
@@ -92,8 +97,12 @@ class CovidStatisticsRepositoryImpl implements CovidStatisticsRepository {
       {required List<String> daysOfWeek}) async {
     List<CovidStatistics> list = [];
     for (String day in daysOfWeek) {
-      final result = await localDataSource.getCovidStatistics(day);
-      list.add(result);
+      try {
+        final result = await localDataSource.getCovidStatistics(day);
+        list.add(result);
+      } catch (e) {
+        print(e);
+      }
     }
     final summary = CovidSummaryModel.fromStatistics(
       statistics: list,
@@ -101,10 +110,11 @@ class CovidStatisticsRepositoryImpl implements CovidStatisticsRepository {
     );
     return Right(
       CovidSummary(
-          confirmed: summary.confirmed,
-          active: summary.active,
-          deaths: summary.deaths,
-          recovered: summary.recovered),
+        confirmed: summary.confirmed,
+        active: summary.active,
+        deaths: summary.deaths,
+        recovered: summary.recovered,
+      ),
     );
   }
 }

@@ -1,9 +1,11 @@
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:equatable/equatable.dart';
 
-class CovidSeries {
-  final String? date;
-  final int? confirmed;
-  final charts.Color? color;
+class CovidSeries extends Equatable {
+  final String date;
+  final int confirmed;
 
-  CovidSeries({this.date, this.confirmed, this.color});
+  CovidSeries({required this.date, required this.confirmed});
+
+  @override
+  List<Object?> get props => [date, confirmed];
 }
