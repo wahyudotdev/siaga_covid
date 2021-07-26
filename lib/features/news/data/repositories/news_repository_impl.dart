@@ -17,6 +17,7 @@ class NewsRepositoryImpl implements NewsRepository {
     required this.localDataSource,
     required this.remoteDataSource,
   });
+
   @override
   Future<Either<Failure, List<News>>> getAllNews() async {
     if (await networkInfo.isConnected) {
@@ -49,14 +50,23 @@ class NewsRepositoryImpl implements NewsRepository {
   }
 
   @override
-  Future<Either<Failure, News>> addOrDeleteFavoriteNews(News news) {
-    // TODO: implement addOrDeleteFavoriteNews
-    throw UnimplementedError();
+  Future<Either<Failure, News>> addOrDeleteFavoriteNews(News news) async {
+    if (news.isFavorite!) {
+      final result = await localDataSource.deleteFavoriteNews(news: news);
+      return Right(result);
+    } else {
+      final result = await localDataSource.saveFavoriteNews(news: news);
+      return Right(result);
+    }
   }
 
   @override
-  Future<Either<Failure, List<News>>> getFavoriteNews() {
-    // TODO: implement getFavoriteNews
-    throw UnimplementedError();
+  Future<Either<Failure, List<News>>> getFavoriteNews() async {
+    try {
+      final result = await localDataSource.getAllNews();
+      return Right(result.where((value) => value.isFavorite == true).toList());
+    } on CacheException {
+      return Left(CacheFailure());
+    }
   }
 }

@@ -3,7 +3,9 @@ import 'package:covid_statistics/core/error/failure.dart';
 import 'package:covid_statistics/core/network/network_info.dart';
 import 'package:covid_statistics/features/news/data/datasource/news_local_datasource.dart';
 import 'package:covid_statistics/features/news/data/datasource/news_remote_datasource.dart';
+import 'package:covid_statistics/features/news/data/models/news_model.dart';
 import 'package:covid_statistics/features/news/data/repositories/news_repository_impl.dart';
+import 'package:covid_statistics/features/news/domain/entities/news.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -30,11 +32,11 @@ void main() {
 
   group('[getAllNews]', () {
     group('Online test', () {
-      when(networkInfo.isConnected).thenAnswer((_) async => true);
       test(
         'should return a List<News> from remote data source when online',
         () async {
           // arrange
+          when(networkInfo.isConnected).thenAnswer((_) async => true);
           when(remoteDataSource.getNews()).thenAnswer((_) async => [tNews]);
           // act
           final result = await repository.getAllNews();
@@ -48,6 +50,7 @@ void main() {
         'should cache data in local storage when fetch data is successfull',
         () async {
           // arrange
+          when(networkInfo.isConnected).thenAnswer((_) async => true);
           when(remoteDataSource.getNews()).thenAnswer((_) async => [tNews]);
           when(localDataSource.cacheNews(news: tNews))
               .thenAnswer((_) async => null);
@@ -63,6 +66,7 @@ void main() {
         'should fetch the data from local storage when there is a ServerExeption',
         () async {
           // arrange
+          when(networkInfo.isConnected).thenAnswer((_) async => true);
           when(remoteDataSource.getNews()).thenThrow(ServerException());
           when(localDataSource.getAllNews()).thenAnswer((_) async => [tNews]);
           // act
@@ -77,6 +81,7 @@ void main() {
         'should return Left(CacheFailure) when there is [CacheException]',
         () async {
           // arrange
+          when(networkInfo.isConnected).thenAnswer((_) async => true);
           when(remoteDataSource.getNews()).thenThrow(ServerException());
           when(localDataSource.getAllNews()).thenThrow(CacheException());
           // act
@@ -88,12 +93,12 @@ void main() {
     });
 
     group('Offline test', () {
-      when(networkInfo.isConnected).thenAnswer((realInvocation) async => false);
-
       test(
         'should return data from cache when available',
         () async {
           // arrange
+          when(networkInfo.isConnected)
+              .thenAnswer((realInvocation) async => false);
           when(localDataSource.getAllNews())
               .thenAnswer((realInvocation) async => [tNews]);
           // act
@@ -108,6 +113,8 @@ void main() {
         'should return a [CacheFailure] when there is [CacheException]',
         () async {
           // arrange
+          when(networkInfo.isConnected)
+              .thenAnswer((realInvocation) async => false);
           when(localDataSource.getAllNews()).thenThrow(CacheException());
           // act
           final result = await repository.getAllNews();
@@ -130,5 +137,72 @@ void main() {
         },
       );
     });
+  });
+
+  group('[addOrDeleteFavoriteNews]', () {
+    final tNewsFavorite =
+        NewsModel.fromJsonString(tNewsFavoriteString).toEntity();
+    test(
+      'should add movie to local storage with isFavorite set to true and return the result',
+      () async {
+        // arrange
+        when(localDataSource.saveFavoriteNews(news: tNews))
+            .thenAnswer((_) async => tNewsFavorite);
+        when(localDataSource.getAllNews())
+            .thenAnswer((realInvocation) async => [tNews]);
+        // act
+        final result = await repository.addOrDeleteFavoriteNews(tNews);
+        // assert
+        verify(localDataSource.saveFavoriteNews(news: tNews));
+        verifyNever(localDataSource.getAllNews());
+        Either<Failure, News> expected = Right(tNewsFavorite);
+        expect(result, equals(expected));
+      },
+    );
+
+    test(
+      'should add movie to local storage with isFavorite set to false and return the result',
+      () async {
+        // arrange
+        when(localDataSource.deleteFavoriteNews(news: tNewsFavorite))
+            .thenAnswer((_) async => tNews);
+        // act
+        final result = await repository.addOrDeleteFavoriteNews(tNewsFavorite);
+        // assert
+        verify(localDataSource.deleteFavoriteNews(news: tNewsFavorite));
+        Either<Failure, News> expected = Right(tNews);
+        expect(result, equals(expected));
+      },
+    );
+  });
+
+  group('[addOrDeleteFavoriteNews]', () {
+    test(
+      'should get a List<News> with isFavorite==true from local storage',
+      () async {
+        final tNewsFavorite =
+            NewsModel.fromEntity(news: tNews, isFavorite: true).toEntity();
+        final data = [tNews, tNewsFavorite];
+        // arrange
+        when(localDataSource.getAllNews())
+            .thenAnswer((realInvocation) async => data);
+        // act
+        final result = await repository.getFavoriteNews();
+        // assert
+        expect(listEquals(result.toIterable().single, [tNewsFavorite]), true);
+      },
+    );
+
+    test(
+      'should return a [CacheFailure] when catch a [CacheException]',
+      () async {
+        // arrange
+        when(localDataSource.getAllNews()).thenThrow(CacheException());
+        // act
+        final result = await repository.getAllNews();
+        // assert
+        expect(result, equals(Left(CacheFailure())));
+      },
+    );
   });
 }
