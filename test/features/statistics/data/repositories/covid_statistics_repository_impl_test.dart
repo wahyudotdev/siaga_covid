@@ -7,6 +7,7 @@ import 'package:covid_statistics/features/statistics/data/models/covid_summary_m
 import 'package:covid_statistics/features/statistics/data/repositories/covid_statistics_repository_impl.dart';
 import 'package:covid_statistics/features/statistics/domain/entities/covid_statistics.dart';
 import 'package:covid_statistics/features/statistics/domain/entities/covid_summary.dart';
+import 'package:covid_statistics/features/statistics/domain/repositories/covid_statistics_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';

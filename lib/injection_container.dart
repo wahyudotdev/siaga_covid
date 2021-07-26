@@ -17,13 +17,18 @@ void init() {
   /// Util
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
   sl.registerLazySingleton<GetDateParam>(() => GetDateParam());
-  sl.registerLazySingleton<LocalStorage>(() => LocalStorageImpl());
+  sl.registerLazySingleton<LocalStorage>(
+    () => LocalStorageImpl(boxName: STATISTICS_BOX_NAME),
+    instanceName: STATISTICS_BOX_NAME,
+  );
 
   /// Datasource
   sl.registerLazySingleton<CovidStatisticsRemoteDataSource>(
       () => CovidStatisticsRemoteDataSourceImpl(sl()));
   sl.registerLazySingleton<CovidStatisticsLocalDataSource>(
-      () => CovidStatisticsLocalDataSourceImpl(sl()));
+      () => CovidStatisticsLocalDataSourceImpl(sl(
+            instanceName: STATISTICS_BOX_NAME,
+          )));
 
   /// Repository
   sl.registerLazySingleton<CovidStatisticsRepository>(

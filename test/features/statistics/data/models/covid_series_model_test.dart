@@ -1,6 +1,6 @@
 import 'package:covid_statistics/features/statistics/data/models/covid_series_model.dart';
-import 'package:covid_statistics/features/statistics/data/repositories/covid_statistics_repository_impl.dart';
 import 'package:covid_statistics/features/statistics/domain/entities/covid_series.dart';
+import 'package:covid_statistics/features/statistics/domain/repositories/covid_statistics_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../fixtures/fixture_reader.dart';

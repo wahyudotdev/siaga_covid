@@ -10,8 +10,6 @@ import '../../../../core/error/failure.dart';
 import '../../domain/repositories/covid_statistics_repository.dart';
 import 'package:dartz/dartz.dart';
 
-const COUNTRY_DATA = 'Indonesia';
-
 class CovidStatisticsRepositoryImpl implements CovidStatisticsRepository {
   final CovidStatisticsRemoteDataSource remoteDataSource;
   final CovidStatisticsLocalDataSource localDataSource;
