@@ -27,7 +27,7 @@ class CovidStatisticsRepositoryImpl implements CovidStatisticsRepository {
     if (list.isNotEmpty) {
       return Right(list);
     } else {
-      return Left(EmptyFailure());
+      return Left(CacheFailure());
     }
   }
 

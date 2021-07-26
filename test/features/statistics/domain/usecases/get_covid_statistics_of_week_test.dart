@@ -37,12 +37,12 @@ void main() {
     () async {
       // arrange
       when(repository.getCovidStatisticsOfWeek(any))
-          .thenAnswer((realInvocation) async => Left(EmptyFailure()));
+          .thenAnswer((realInvocation) async => Left(CacheFailure()));
       // act
       final result = await usecase(DateParams(daysOfWeek: daysOfWeek));
       // assert
       verify(repository.getCovidStatisticsOfWeek(any));
-      expect(result, equals(Left(EmptyFailure())));
+      expect(result, equals(Left(CacheFailure())));
     },
   );
 }

@@ -167,7 +167,7 @@ void main() {
         verify(networkInfo.isConnected);
         verify(localDataSource.getCovidStatistics(any));
         verify(remoteDataSource.getCovidStatistics(any));
-        expect(result, Left(EmptyFailure()));
+        expect(result, Left(CacheFailure()));
       },
     );
   });
@@ -225,7 +225,7 @@ void main() {
         // assert
         verify(networkInfo.isConnected);
         verify(localDataSource.getCovidStatistics(any));
-        expect(result, Left(EmptyFailure()));
+        expect(result, Left(CacheFailure()));
       },
     );
   });
