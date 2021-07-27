@@ -248,13 +248,6 @@ packages:
       url: "https://github.com/bobanalappat/data_connection_checker.git"
     source: git
     version: "0.3.4"
-  dio:
-    dependency: "direct main"
-    description:
-      name: dio
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.0.0"
   equatable:
     dependency: "direct main"
     description:

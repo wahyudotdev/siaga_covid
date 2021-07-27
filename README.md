@@ -1,6 +1,10 @@
 # Siaga Covid
 
-This is a simple covid dashboard app that demonstrate TDD principle with API and local data caching.
+This is a simple covid dashboard app that demonstrate Test Driven Development principle with API and local data caching.
 
-Credits for the dribble [shot](https://dribbble.com/shots/11015463-Covid-19-App-Free)
-
+## Credits for the dribble [shot](https://dribbble.com/shots/11015463-Covid-19-App-Free)
+## Screenshot
+<img src="https://raw.githubusercontent.com/wahyudotdev/siaga_covid/main/screenshot/home_page.png" width=150>
+<img src="https://raw.githubusercontent.com/wahyudotdev/siaga_covid/main/screenshot/statistic_page.png" width=150>
+<img src="https://raw.githubusercontent.com/wahyudotdev/siaga_covid/main/screenshot/news_page.png" width=150>
+<img src="https://raw.githubusercontent.com/wahyudotdev/siaga_covid/main/screenshot/detail_news_page.png" width=150>
