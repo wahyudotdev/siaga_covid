@@ -10,6 +10,8 @@ abstract class NewsLocalDataSource {
   Future<News> deleteFavoriteNews({required News news});
 }
 
+const NEWS_BOX_NAME = 'covid_news';
+
 class NewsLocalDataSourceImpl implements NewsLocalDataSource {
   final LocalStorage _localStorage;
 

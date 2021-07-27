@@ -30,7 +30,7 @@ class _NewsPageState extends State<NewsPage> {
   @override
   void initState() {
     super.initState();
-    getNews();
+    // getNews();
   }
 
   Widget _title() {
@@ -283,9 +283,9 @@ class _NewsPageState extends State<NewsPage> {
       child: CustomScrollView(
         slivers: [
           _title(),
-          // _carouselNews(),
-          // _recomendation(),
-          // _newsList(),
+          _carouselNews(),
+          _recomendation(),
+          _newsList(),
         ],
       ),
     );

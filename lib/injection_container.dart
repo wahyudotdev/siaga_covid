@@ -1,5 +1,8 @@
 import 'package:covid_statistics/core/local_storage/local_storage.dart';
+import 'package:covid_statistics/features/news/news_di.dart';
+import 'package:covid_statistics/features/news/presentation/bloc/news_bloc.dart';
 import 'package:covid_statistics/features/statistics/data/datasources/covid_statistics_local_datasource.dart';
+import 'package:covid_statistics/features/statistics/statistics_di.dart';
 
 import 'core/network/network_info.dart';
 import 'core/query_helper/date_param_helper.dart';
@@ -14,42 +17,14 @@ import 'package:http/http.dart';
 
 final sl = GetIt.instance;
 void init() {
-  /// Util
+  /// Core
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
-  sl.registerLazySingleton<GetDateParam>(() => GetDateParam());
-  sl.registerLazySingleton<LocalStorage>(
-    () => LocalStorageImpl(boxName: STATISTICS_BOX_NAME),
-    instanceName: STATISTICS_BOX_NAME,
-  );
-
-  /// Datasource
-  sl.registerLazySingleton<CovidStatisticsRemoteDataSource>(
-      () => CovidStatisticsRemoteDataSourceImpl(sl()));
-  sl.registerLazySingleton<CovidStatisticsLocalDataSource>(
-      () => CovidStatisticsLocalDataSourceImpl(sl(
-            instanceName: STATISTICS_BOX_NAME,
-          )));
-
-  /// Repository
-  sl.registerLazySingleton<CovidStatisticsRepository>(
-      () => CovidStatisticsRepositoryImpl(
-            remoteDataSource: sl(),
-            localDataSource: sl(),
-            networkInfo: sl(),
-          ));
-
-  /// Usecase
-  sl.registerLazySingleton<GetCovidStatisticsOfWeek>(
-      () => GetCovidStatisticsOfWeek(sl()));
-
-  /// BloC
-  sl.registerFactory(() => CovidStatisticsBloc(
-        covidStatisticsOfWeek: sl(),
-        getDateParam: sl(),
-      ));
 
   /// External
   sl.registerLazySingleton<DataConnectionChecker>(
       () => DataConnectionChecker());
   sl.registerLazySingleton<Client>(() => Client());
+
+  statisticsDi();
+  newsDi();
 }
