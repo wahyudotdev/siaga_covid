@@ -1,6 +1,6 @@
 # Siaga Covid
 
-This is a simple covid dashboard app that implement Test Driven Development principle by reso coder with API and local data caching.
+This is a simple covid dashboard and news app that implement Test Driven Development principle by reso coder with API and local data caching.
 
 ## Technical spec
 - Remote client : http
