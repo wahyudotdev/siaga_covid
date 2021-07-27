@@ -136,6 +136,20 @@ void main() {
           expect(result, equals(Left(CacheFailure())));
         },
       );
+
+      test(
+        'should return a [CacheFailure] when there is no favorite news from cached news',
+        () async {
+          // arrange
+          when(localDataSource.getAllNews())
+              .thenAnswer((realInvocation) async => [tNews]);
+          // act
+          final result = await repository.getFavoriteNews();
+          // assert
+          verify(localDataSource.getAllNews());
+          expect(result, Left(CacheFailure()));
+        },
+      );
     });
   });
 

@@ -64,7 +64,12 @@ class NewsRepositoryImpl implements NewsRepository {
   Future<Either<Failure, List<News>>> getFavoriteNews() async {
     try {
       final result = await localDataSource.getAllNews();
-      return Right(result.where((value) => value.isFavorite == true).toList());
+      final favoriteList =
+          result.where((value) => value.isFavorite == true).toList();
+      if (favoriteList.isNotEmpty) {
+        return Right(favoriteList);
+      } else
+        return Left(CacheFailure());
     } on CacheException {
       return Left(CacheFailure());
     }
