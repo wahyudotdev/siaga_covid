@@ -11,10 +11,10 @@ class NewsInitial extends NewsState {}
 
 class LoadingNews extends NewsState {}
 
-class LoadedNews extends NewsState {
+class LoadedAllNews extends NewsState {
   final List<News> news;
 
-  LoadedNews({required this.news});
+  LoadedAllNews({required this.news});
 }
 
 class LoadedFavoriteNews extends NewsState {
@@ -26,5 +26,11 @@ class LoadedFavoriteNews extends NewsState {
 class FavoriteNews extends NewsState {
   final News news;
 
-  FavoriteNews(this.news);
+  FavoriteNews({required this.news});
+}
+
+class ErrorLoadingNews extends NewsState {
+  final String message;
+
+  ErrorLoadingNews({required this.message});
 }

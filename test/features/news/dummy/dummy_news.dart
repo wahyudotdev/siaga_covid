@@ -31,3 +31,6 @@ final tNewsJsonString = NewsModel.fromEntity(news: tNews).toJsonString();
 
 final tNewsFavoriteString =
     NewsModel.fromEntity(news: tNews, isFavorite: true).toJsonString();
+
+final tFavoriteNews =
+    NewsModel.fromEntity(news: tNews, isFavorite: true).toEntity();

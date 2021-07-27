@@ -8,6 +8,7 @@ class ServerFailure extends Failure {
 }
 
 class CacheFailure extends Failure {
+  static const MESSAGE = 'Terjadi error cache data';
   @override
   List<Object?> get props => [];
 }
