@@ -2,6 +2,11 @@
 
 This is a simple covid dashboard app that implement Test Driven Development principle by reso coder with API and local data caching.
 
+## Technical spec
+- Remote client : http
+- Local database : hive
+- State manager : flutter_bloc
+
 ## Credits for the dribble [shot](https://dribbble.com/shots/11015463-Covid-19-App-Free)
 ## Screenshot
 <div>
