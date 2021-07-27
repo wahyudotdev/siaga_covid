@@ -1,4 +1,5 @@
 import 'package:covid_statistics/core/local_storage/local_storage.dart';
+import 'package:covid_statistics/features/news/data/datasource/news_local_datasource.dart';
 import 'package:covid_statistics/features/statistics/domain/repositories/covid_statistics_repository.dart';
 import 'injection_container.dart' as di;
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ void main() async {
   di.init();
   await di.sl.allReady();
   await di.sl.get<LocalStorage>(instanceName: STATISTICS_BOX_NAME).init();
+  await di.sl.get<LocalStorage>(instanceName: NEWS_BOX_NAME).init();
   runApp(MyApp());
 }
 

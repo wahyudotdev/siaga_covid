@@ -1,38 +1,16 @@
+import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:covid_statistics/core/utils/app_colors.dart';
 import 'package:covid_statistics/core/utils/view.dart';
-import '../../../../repository/rss_news.dart';
-import 'detail_news_page.dart';
+import 'package:covid_statistics/features/news/domain/entities/news.dart';
+import 'package:covid_statistics/features/news/presentation/bloc/news_bloc.dart';
+import 'package:covid_statistics/features/news/presentation/pages/detail_news_page.dart';
+import 'package:covid_statistics/injection_container.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:webfeed/domain/rss_feed.dart';
-import 'package:webfeed/domain/rss_item.dart';
 
-class NewsPage extends StatefulWidget {
-  @override
-  _NewsPageState createState() => _NewsPageState();
-}
-
-class _NewsPageState extends State<NewsPage> {
-  RssFeed rssFeed = RssFeed();
-
-  int getWordMinute(String words) {
-    var regExp = RegExp('[^0-9A-Z,\n]', caseSensitive: false, multiLine: true);
-    int count = regExp.allMatches(words).length;
-    int readingSpeed = 300;
-    return (count / readingSpeed).round();
-  }
-
-  void getNews() async {
-    var result = await RssNews().getNews();
-    setState(() => rssFeed = result);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // getNews();
-  }
-
+class NewsPage extends StatelessWidget {
+  final _bloc = sl<NewsBloc>();
   Widget _title() {
     return SliverToBoxAdapter(
       child: Container(
@@ -48,7 +26,7 @@ class _NewsPageState extends State<NewsPage> {
     );
   }
 
-  Widget _carouselNewsItem({required RssItem rssItem}) {
+  Widget _carouselNewsItem({required News news}) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 5.0),
       child: Column(
@@ -68,7 +46,7 @@ class _NewsPageState extends State<NewsPage> {
                   )
                 ],
                 image: DecorationImage(
-                  image: NetworkImage(rssItem.enclosure!.url!),
+                  image: MemoryImage(base64.decode(news.base64Image!)),
                   fit: BoxFit.fill,
                 ),
               ),
@@ -83,13 +61,13 @@ class _NewsPageState extends State<NewsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    rssItem.title!,
+                    news.title!,
                     style: TextStyle(
                       color: Colors.white,
                     ),
                   ),
                   Text(
-                    '${getWordMinute(rssItem.description!)} min bacaan',
+                    '${news.minuteReading} min bacaan',
                     style: TextStyle(
                       color: Colors.grey,
                     ),
@@ -105,15 +83,13 @@ class _NewsPageState extends State<NewsPage> {
 
   // ignore: unused_element
   Widget _carouselNews() {
-    return rssFeed.items!.length == 0
-        ? SliverToBoxAdapter(
-            child: Container(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            ),
-          )
-        : SliverToBoxAdapter(
+    return BlocBuilder<NewsBloc, NewsState>(
+      builder: (context, state) {
+        if (state is NewsInitial) {
+          _bloc.add(GetAllNewsEvent());
+        }
+        if (state is LoadedAllNews) {
+          return SliverToBoxAdapter(
             child: Container(
               width: View.x * 100,
               child: CarouselSlider(
@@ -122,14 +98,17 @@ class _NewsPageState extends State<NewsPage> {
                   viewportFraction: 0.9,
                   autoPlay: true,
                 ),
-                items: [
-                  _carouselNewsItem(rssItem: rssFeed.items![0]),
-                  _carouselNewsItem(rssItem: rssFeed.items![1]),
-                  _carouselNewsItem(rssItem: rssFeed.items![2]),
-                ],
+                items:
+                    state.news.map((e) => _carouselNewsItem(news: e)).toList(),
               ),
             ),
           );
+        }
+        return SliverToBoxAdapter(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
   }
 
   // ignore: unused_element
@@ -151,16 +130,10 @@ class _NewsPageState extends State<NewsPage> {
     );
   }
 
-  Widget _newsListItem({required RssItem rssItem}) {
+  Widget _newsListItem({required News news, required BuildContext context}) {
     return InkWell(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => DetailNewsPage(
-            rssItem: rssItem,
-          ),
-        ),
-      ),
+      onTap: () => Navigator.push(context,
+          MaterialPageRoute(builder: (context) => DetailNewsPage(news: news))),
       child: Container(
         width: double.infinity,
         padding: EdgeInsets.only(
@@ -193,7 +166,7 @@ class _NewsPageState extends State<NewsPage> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(View.x * 3),
                     image: DecorationImage(
-                      image: NetworkImage(rssItem.enclosure!.url!),
+                      image: MemoryImage(base64.decode(news.base64Image!)),
                       fit: BoxFit.fill,
                     ),
                     color: black,
@@ -228,7 +201,7 @@ class _NewsPageState extends State<NewsPage> {
                         right: View.x * 3,
                       ),
                       child: Text(
-                        rssItem.title!,
+                        news.title!,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: View.x * 4,
@@ -238,7 +211,7 @@ class _NewsPageState extends State<NewsPage> {
                     ),
                     Container(
                       child: Text(
-                        '${getWordMinute(rssItem.description!)} min bacaan',
+                        '${news.minuteReading} min bacaan',
                         style: TextStyle(
                           color: Colors.grey,
                           fontSize: View.x * 3.5,
@@ -257,36 +230,42 @@ class _NewsPageState extends State<NewsPage> {
 
   // ignore: unused_element
   Widget _newsList() {
-    return rssFeed.items!.length == 0
-        ? SliverToBoxAdapter(
-            child: Container(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            ),
-          )
-        : SliverFixedExtentList(
+    return BlocBuilder<NewsBloc, NewsState>(
+      builder: (context, state) {
+        if (state is LoadedAllNews) {
+          return SliverFixedExtentList(
             itemExtent: View.y * 20,
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                return _newsListItem(rssItem: rssFeed.items![index]);
+                return _newsListItem(news: state.news[index], context: context);
               },
-              childCount: rssFeed.items!.length,
+              childCount: state.news.length,
             ),
           );
+        }
+        return SliverToBoxAdapter(
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: darkblue,
-      child: CustomScrollView(
-        slivers: [
-          _title(),
-          _carouselNews(),
-          _recomendation(),
-          _newsList(),
-        ],
+    return BlocProvider<NewsBloc>(
+      create: (context) => _bloc,
+      child: Container(
+        color: darkblue,
+        child: CustomScrollView(
+          slivers: [
+            _title(),
+            _carouselNews(),
+            _recomendation(),
+            _newsList(),
+          ],
+        ),
       ),
     );
   }
