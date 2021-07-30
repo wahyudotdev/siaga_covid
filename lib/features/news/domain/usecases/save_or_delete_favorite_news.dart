@@ -1,7 +1,7 @@
-import 'package:covid_statistics/core/error/failure.dart';
-import 'package:covid_statistics/core/usecases/usecase.dart';
-import 'package:covid_statistics/features/news/domain/entities/news.dart';
-import 'package:covid_statistics/features/news/domain/repositories/news_repository.dart';
+import '../../../../core/error/failure.dart';
+import '../../../../core/usecases/usecase.dart';
+import '../entities/news.dart';
+import '../repositories/news_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 

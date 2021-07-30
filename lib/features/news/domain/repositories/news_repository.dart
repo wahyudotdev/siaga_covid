@@ -1,5 +1,5 @@
-import 'package:covid_statistics/core/error/failure.dart';
-import 'package:covid_statistics/features/news/domain/entities/news.dart';
+import '../../../../core/error/failure.dart';
+import '../entities/news.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class NewsRepository {

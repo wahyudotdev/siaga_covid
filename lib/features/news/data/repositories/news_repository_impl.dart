@@ -1,10 +1,10 @@
-import 'package:covid_statistics/core/error/exception.dart';
-import 'package:covid_statistics/core/network/network_info.dart';
-import 'package:covid_statistics/features/news/data/datasource/news_local_datasource.dart';
-import 'package:covid_statistics/features/news/data/datasource/news_remote_datasource.dart';
-import 'package:covid_statistics/features/news/domain/entities/news.dart';
-import 'package:covid_statistics/core/error/failure.dart';
-import 'package:covid_statistics/features/news/domain/repositories/news_repository.dart';
+import '../../../../core/error/exception.dart';
+import '../../../../core/network/network_info.dart';
+import '../datasource/news_local_datasource.dart';
+import '../datasource/news_remote_datasource.dart';
+import '../../domain/entities/news.dart';
+import '../../../../core/error/failure.dart';
+import '../../domain/repositories/news_repository.dart';
 import 'package:dartz/dartz.dart';
 
 class NewsRepositoryImpl implements NewsRepository {

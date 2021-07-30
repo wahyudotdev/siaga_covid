@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:covid_statistics/features/statistics/domain/entities/covid_series.dart';
-import 'package:covid_statistics/features/statistics/domain/entities/covid_statistics.dart';
+import '../../domain/entities/covid_series.dart';
+import '../../domain/entities/covid_statistics.dart';
 
 class CovidSeriesModel extends CovidSeries {
   final String date;

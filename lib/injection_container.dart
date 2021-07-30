@@ -1,5 +1,5 @@
-import 'package:covid_statistics/features/news/news_di.dart';
-import 'package:covid_statistics/features/statistics/statistics_di.dart';
+import 'features/news/news_di.dart';
+import 'features/statistics/statistics_di.dart';
 
 import 'core/network/network_info.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';

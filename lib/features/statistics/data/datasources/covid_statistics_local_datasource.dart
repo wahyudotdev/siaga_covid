@@ -1,7 +1,7 @@
-import 'package:covid_statistics/core/error/exception.dart';
-import 'package:covid_statistics/core/local_storage/local_storage.dart';
-import 'package:covid_statistics/features/statistics/data/models/covid_statistics_model.dart';
-import 'package:covid_statistics/features/statistics/domain/entities/covid_statistics.dart';
+import '../../../../core/error/exception.dart';
+import '../../../../core/local_storage/local_storage.dart';
+import '../models/covid_statistics_model.dart';
+import '../../domain/entities/covid_statistics.dart';
 import 'package:intl/intl.dart';
 
 abstract class CovidStatisticsLocalDataSource {

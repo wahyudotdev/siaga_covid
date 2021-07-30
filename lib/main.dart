@@ -1,6 +1,6 @@
-import 'package:covid_statistics/core/local_storage/local_storage.dart';
-import 'package:covid_statistics/features/news/data/datasource/news_local_datasource.dart';
-import 'package:covid_statistics/features/statistics/domain/repositories/covid_statistics_repository.dart';
+import 'core/local_storage/local_storage.dart';
+import 'features/news/data/datasource/news_local_datasource.dart';
+import 'features/statistics/domain/repositories/covid_statistics_repository.dart';
 import 'injection_container.dart' as di;
 import 'package:flutter/material.dart';
 import 'features/menu_page.dart';

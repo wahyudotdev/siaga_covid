@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:covid_statistics/core/error/failure.dart';
-import 'package:covid_statistics/core/usecases/no_params.dart';
-import 'package:covid_statistics/features/news/domain/entities/news.dart';
-import 'package:covid_statistics/features/news/domain/usecases/get_all_news.dart';
-import 'package:covid_statistics/features/news/domain/usecases/get_favorite_news.dart';
-import 'package:covid_statistics/features/news/domain/usecases/save_or_delete_favorite_news.dart';
+import '../../../../core/error/failure.dart';
+import '../../../../core/usecases/no_params.dart';
+import '../../domain/entities/news.dart';
+import '../../domain/usecases/get_all_news.dart';
+import '../../domain/usecases/get_favorite_news.dart';
+import '../../domain/usecases/save_or_delete_favorite_news.dart';
 import 'package:equatable/equatable.dart';
 
 part 'news_event.dart';

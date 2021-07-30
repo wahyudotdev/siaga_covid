@@ -1,7 +1,7 @@
-import 'package:covid_statistics/core/error/exception.dart';
-import 'package:covid_statistics/core/local_storage/local_storage.dart';
-import 'package:covid_statistics/features/news/data/models/news_model.dart';
-import 'package:covid_statistics/features/news/domain/entities/news.dart';
+import '../../../../core/error/exception.dart';
+import '../../../../core/local_storage/local_storage.dart';
+import '../models/news_model.dart';
+import '../../domain/entities/news.dart';
 
 abstract class NewsLocalDataSource {
   Future<List<News>> getAllNews();

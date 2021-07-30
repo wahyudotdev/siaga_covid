@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:covid_statistics/features/statistics/domain/entities/covid_statistics.dart';
+import '../../domain/entities/covid_statistics.dart';
 
 import '../../../../core/error/exception.dart';
 import '../models/covid_statistics_model.dart';

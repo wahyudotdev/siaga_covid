@@ -1,4 +1,4 @@
-import 'package:covid_statistics/features/statistics/domain/entities/covid_summary.dart';
+import '../entities/covid_summary.dart';
 
 import '../../../../core/error/failure.dart';
 import '../entities/covid_statistics.dart';

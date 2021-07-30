@@ -1,6 +1,6 @@
-import 'package:covid_statistics/core/local_storage/local_storage.dart';
-import 'package:covid_statistics/core/query_helper/date_param_helper.dart';
-import 'package:covid_statistics/injection_container.dart';
+import '../../core/local_storage/local_storage.dart';
+import '../../core/query_helper/date_param_helper.dart';
+import '../../injection_container.dart';
 
 import 'data/datasources/covid_statistics_local_datasource.dart';
 import 'data/datasources/covid_statistics_remote_datasource.dart';

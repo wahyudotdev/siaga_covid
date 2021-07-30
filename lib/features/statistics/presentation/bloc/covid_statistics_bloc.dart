@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:covid_statistics/features/statistics/data/models/covid_series_model.dart';
-import 'package:covid_statistics/features/statistics/data/models/covid_summary_model.dart';
-import 'package:covid_statistics/features/statistics/domain/entities/covid_series.dart';
-import 'package:covid_statistics/features/statistics/domain/entities/covid_statistics.dart';
-import 'package:covid_statistics/features/statistics/domain/usecases/date_params.dart';
+import '../../data/models/covid_series_model.dart';
+import '../../data/models/covid_summary_model.dart';
+import '../../domain/entities/covid_series.dart';
+import '../../domain/entities/covid_statistics.dart';
+import '../../domain/usecases/date_params.dart';
 import '../../../../core/query_helper/date_param_helper.dart';
 import '../../domain/entities/covid_summary.dart';
 import '../../domain/usecases/get_covid_statistics_of_week.dart';

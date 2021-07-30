@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:covid_statistics/features/news/domain/entities/news.dart';
+import '../../domain/entities/news.dart';
 import 'package:webfeed/domain/rss_item.dart';
 
 class NewsModel extends News {

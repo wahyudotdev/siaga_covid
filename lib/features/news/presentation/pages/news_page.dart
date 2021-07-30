@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:covid_statistics/core/utils/app_colors.dart';
-import 'package:covid_statistics/core/utils/view.dart';
-import 'package:covid_statistics/features/news/domain/entities/news.dart';
-import 'package:covid_statistics/features/news/presentation/bloc/news_bloc.dart';
-import 'package:covid_statistics/features/news/presentation/pages/detail_news_page.dart';
-import 'package:covid_statistics/injection_container.dart';
+import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/view.dart';
+import '../../domain/entities/news.dart';
+import '../bloc/news_bloc.dart';
+import 'detail_news_page.dart';
+import '../../../../injection_container.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 

@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:covid_statistics/core/utils/app_colors.dart';
-import 'package:covid_statistics/core/utils/view.dart';
-import 'package:covid_statistics/features/news/domain/entities/news.dart';
+import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/view.dart';
+import '../../domain/entities/news.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:share_plus/share_plus.dart';

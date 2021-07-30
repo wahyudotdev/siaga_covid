@@ -1,7 +1,7 @@
-import 'package:covid_statistics/core/utils/app_colors.dart';
-import 'package:covid_statistics/core/utils/constant.dart';
-import 'package:covid_statistics/core/utils/view.dart';
-import 'package:covid_statistics/features/statistics/presentation/widgets/covid_chart.dart';
+import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/constant.dart';
+import '../../../../core/utils/view.dart';
+import '../widgets/covid_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';

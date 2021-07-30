@@ -1,6 +1,6 @@
-import 'package:covid_statistics/features/statistics/data/datasources/covid_statistics_local_datasource.dart';
-import 'package:covid_statistics/features/statistics/data/models/covid_summary_model.dart';
-import 'package:covid_statistics/features/statistics/domain/entities/covid_summary.dart';
+import '../datasources/covid_statistics_local_datasource.dart';
+import '../models/covid_summary_model.dart';
+import '../../domain/entities/covid_summary.dart';
 
 import '../../../../core/error/exception.dart';
 import '../../../../core/network/network_info.dart';

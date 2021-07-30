@@ -1,5 +1,5 @@
-import 'package:covid_statistics/core/local_storage/local_storage.dart';
-import 'package:covid_statistics/injection_container.dart';
+import '../../core/local_storage/local_storage.dart';
+import '../../injection_container.dart';
 
 import 'data/datasource/news_local_datasource.dart';
 import 'data/datasource/news_remote_datasource.dart';

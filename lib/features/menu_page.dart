@@ -1,5 +1,5 @@
-import 'package:covid_statistics/core/utils/app_colors.dart';
-import 'package:covid_statistics/core/utils/view.dart';
+import '../core/utils/app_colors.dart';
+import '../core/utils/view.dart';
 
 import 'home/presentation/pages/home_page.dart';
 import 'news/presentation/pages/news_page.dart';

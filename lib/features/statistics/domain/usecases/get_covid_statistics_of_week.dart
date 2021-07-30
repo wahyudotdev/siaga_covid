@@ -1,4 +1,4 @@
-import 'package:covid_statistics/features/statistics/domain/usecases/date_params.dart';
+import 'date_params.dart';
 
 import '../../../../core/error/failure.dart';
 import '../../../../core/usecases/usecase.dart';
